@@ -1,5 +1,39 @@
-# nbdev template
+# Welcome to `snkrfinder`
+> this repository / module are used to develop the fastai API version of Sneaker Finder:  a tool to help find sneakers similar to what you like!
 
-Use this template to more easily create your [nbdev](https://nbdev.fast.ai/) project.
 
-_If you are using an older version of this template, and want to upgrade to the theme-based version, see [this helper script](https://gist.github.com/hamelsmu/977e82a23dcd8dcff9058079cb4a8f18) (more explanation of what this means is contained in the link to the script)_.
+This file will become your README and also the index of your documentation.
+
+
+### version 0.2.4 Feb 2021 (0.1 Insight tf/keras)
+
+## OVERVIEW - WIP
+
+This is a full refactor of the Sneaker Finder tool I developed as an initial Insight Data Science sprint project.  The original project used TensorFlow, Keras, and Flask.  This project has been completely rewritten with the fastai API and pytorch.  The primary goal was to provide a task to learn pytorch and the fastai api, but I also aim to compose several blogs.
+
+This is a project initiated while an Insight Data Science fellow.  It grew out of my interest in making data driven tools in the fashion/retail space I had most recently been working.   The original over-scoped idea was to make a shoe desighn tool which could quickly develop some initial sneakers based on choosing some examples, and some text descriptors.  Designs are constrained by the "latent space" defined (discovered?) by a database of shoe images.  However, given the 3 week sprint allowed for development, I pared the tool down to a simple "aesthetic" recommender for sneakers, using the same idea of utilizing an embedding space defined by the database fo shoe images.
+
+
+## Install
+
+`pip install snkrfinder`
+
+## How to use
+
+Fill me in please! Don't forget code examples:
+
+```python
+1+1
+```
+
+
+
+
+    2
+
+
+
+dump_pickle[source]
+dump_pickle(filepath, item_to_save)
+
+simple wrapper to load a pickelfile
