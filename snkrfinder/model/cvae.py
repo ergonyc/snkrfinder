@@ -8,11 +8,11 @@ __all__ = ['prep_df_for_datablocks', 'df_get_x', 'df_get_y', 'get_ae_btfms', 'La
            'trns_mobilenet_v2', 'VAE_mnet', 'bn_splitter', 'mnetV2_split', 'AE_rnet', 'AE_mnet']
 
 # Cell
-from ..imports import *
-from ..core import *
-from ..data import *
+#from snkrfinder.imports import *
+#from snkrfinder.core import *
+#from snkrfinder.data import *
 from .core import *
-from .transfer import *
+#from snkrfinder.model.transfer import *
 
 from fastai.test_utils import show_install, synth_learner, nvidia_smi, nvidia_mem
 

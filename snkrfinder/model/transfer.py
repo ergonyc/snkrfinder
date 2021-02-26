@@ -3,9 +3,9 @@
 __all__ = ['transfer_mobilenet_v2', 'get_zappos_datablock', 'prep_df_for_datablocks', 'get_zappos_cat_dataloaders']
 
 # Cell
-from ..imports import *
-from ..core import *
-from ..data import *
+#from snkrfinder.imports import *
+#from snkrfinder.core import *
+#from snkrfinder.data import *
 from .core import *
 
 

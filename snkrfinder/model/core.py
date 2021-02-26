@@ -8,8 +8,8 @@ __all__ = ['get_cuda', 'get_cpu', 'AdaptiveConcatPoolFlat', 'get_mnetV2_feature_
            'get_umap_embedding']
 
 # Cell
-from ..imports import *
-from ..core import *
+#from snkrfinder.imports import *
+#from snkrfinder.core import *
 from ..data import *
 
 from sklearn.neighbors import NearestNeighbors

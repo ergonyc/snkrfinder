@@ -2,6 +2,17 @@
 > this repository / module are used to develop the fastai API version of Sneaker Finder:  a tool to help find sneakers similar to what you like!
 
 
+```python
+HOME
+```
+
+
+
+
+    Path('/home/ergonyc')
+
+
+
 This file will become your README and also the index of your documentation.
 
 
@@ -36,7 +47,7 @@ NOTE:  symbolic link in the nbs directory to enable the module loads in these no
 
 Fill me in please! Don't forget code examples:
 
-```
+```python
 1+1
 ```
 

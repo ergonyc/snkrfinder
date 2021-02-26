@@ -5,7 +5,7 @@ __all__ = ['get_zappos_db', 'read_zappos_meta', 'simplify_zappos_db', 'skl_tt_sp
            'extract_brand_sns', 'extract_db_nm', 'get_scraped_db', 'merge_dbs']
 
 # Cell
-from .imports import *
+#from snkrfinder.imports import *
 from .core import *
 
 import scipy.io as sio

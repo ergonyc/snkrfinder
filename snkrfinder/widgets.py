@@ -5,9 +5,9 @@ __all__ = ['plot_umap', 'on_click_find_similar', 'find_similar', 'update_knn_red
            'dd_model', 'sld_sampfrac', 'knn_select', 'tab', 'cta', 'console', 'dashboard', 'console']
 
 # Cell
-from .imports import *
-from .core import *
-from .data import *
+#from snkrfinder.imports import *
+#from snkrfinder.core import *
+#from snkrfinder.data import *
 from .model.core import *
 from .model.transfer import *
 from .model.cvae import *
