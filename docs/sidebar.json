@@ -2,10 +2,6 @@
   "snkrfinder": {
     "Overview": "/",
     "snkrfinder.core": "/core",
-    "snkrfinder.data.core": "/data.core",
-    "first snkrfinder.model.core": "/model.core",
-    "first snkrfinder.model.transfer": "/model.transfer",
-    "first snkrfinder.model.cvae": "/model.cvae",
-    "first snkrfinder.widgets.core": "/widgets.core"
+    "snkrfinder.data.core": "/data.core"
   }
 }
