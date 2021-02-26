@@ -33,23 +33,24 @@ index = {"get_home": "00_core.ipynb",
          "BETA": "00_core.ipynb",
          "LATENT_DIM": "00_core.ipynb",
          "mobilenet_v2_meta": "00_core.ipynb",
-         "get_zappos_db": "01_data.core.ipynb",
-         "read_zappos_meta": "01_data.core.ipynb",
-         "simplify_zappos_db": "01_data.core.ipynb",
-         "skl_tt_split": "01_data.core.ipynb",
-         "add_subdir": "01_data.core.ipynb",
-         "creat_full_local_categorydirs": "01_data.core.ipynb",
-         "create_test_train_directories": "01_data.core.ipynb",
-         "extract_cat": "01_data.core.ipynb",
-         "extract_brand_goat": "01_data.core.ipynb",
-         "extract_brand_sns": "01_data.core.ipynb",
-         "extract_db_nm": "01_data.core.ipynb",
-         "get_scraped_db": "01_data.core.ipynb",
-         "merge_dbs": "01_data.core.ipynb",
-         "extract_zap_sneakers": "01_data.core.ipynb"}
+         "get_zappos_db": "01a_data.munge.ipynb",
+         "read_zappos_meta": "01a_data.munge.ipynb",
+         "simplify_zappos_db": "01a_data.munge.ipynb",
+         "skl_tt_split": "01a_data.munge.ipynb",
+         "extract_cat": "01a_data.munge.ipynb",
+         "extract_brand_goat": "01a_data.munge.ipynb",
+         "extract_brand_sns": "01a_data.munge.ipynb",
+         "extract_db_nm": "01a_data.munge.ipynb",
+         "get_scraped_db": "01a_data.munge.ipynb",
+         "merge_dbs": "01a_data.munge.ipynb",
+         "extract_zap_sneakers": "01a_data.munge.ipynb",
+         "add_subdir": "01b_data.load.ipynb",
+         "creat_full_local_categorydirs": "01b_data.load.ipynb",
+         "create_test_train_directories": "01b_data.load.ipynb"}
 
 modules = ["core.py",
-           "data/core.py"]
+           "data/munge.py",
+           "data/load.py"]
 
 doc_url = "https://ergonyc.github.io/snkrfinder/"
 

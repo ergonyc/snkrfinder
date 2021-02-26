@@ -2,6 +2,7 @@
   "snkrfinder": {
     "Overview": "/",
     "snkrfinder.core": "/core",
-    "snkrfinder.data.core": "/data.core"
+    "snkrfinder.data.munge": "/data.munge",
+    "snkrfinder.data.core": "/data.load"
   }
 }
