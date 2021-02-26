@@ -13,8 +13,8 @@ entries:
       title: snkrfinder.core
       url: /core
     - output: web,pdf
-      title: snkrfinder.data
-      url: /data
+      title: snkrfinder.data.core
+      url: /data.core
     - output: web,pdf
       title: first snkrfinder.model.core
       url: /model.core
@@ -25,8 +25,8 @@ entries:
       title: first snkrfinder.model.cvae
       url: /model.cvae
     - output: web,pdf
-      title: first snkrfinder.widgets
-      url: /widgets
+      title: first snkrfinder.widgets.core
+      url: /widgets.core
     output: web
     title: snkrfinder
   output: web

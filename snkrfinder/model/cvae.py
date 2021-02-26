@@ -8,9 +8,9 @@ __all__ = ['prep_df_for_datablocks', 'df_get_x', 'df_get_y', 'get_ae_btfms', 'La
            'trns_mobilenet_v2', 'VAE_mnet', 'bn_splitter', 'mnetV2_split', 'AE_rnet', 'AE_mnet']
 
 # Cell
-#from snkrfinder.imports import *
-#from snkrfinder.core import *
-#from snkrfinder.data import *
+from ..imports import *
+from ..core import *
+from ..data.core import *
 from .core import *
 #from snkrfinder.model.transfer import *
 

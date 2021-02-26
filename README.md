@@ -2,17 +2,6 @@
 > this repository / module are used to develop the fastai API version of Sneaker Finder:  a tool to help find sneakers similar to what you like!
 
 
-```python
-HOME
-```
-
-
-
-
-    Path('/home/ergonyc')
-
-
-
 This file will become your README and also the index of your documentation.
 
 
@@ -51,14 +40,18 @@ Fill me in please! Don't forget code examples:
 1+1
 ```
 
-
-
-
-    2
-
-
-
 dump_pickle[source]
 dump_pickle(filepath, item_to_save)
 
 simple wrapper to load a pickelfile
+
+```python
+HOME
+```
+
+
+
+
+    Path('/home/ergonyc')
+
+
