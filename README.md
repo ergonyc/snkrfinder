@@ -18,6 +18,20 @@ This is a project initiated while an Insight Data Science fellow.  It grew out o
 
 `pip install snkrfinder`
 
+installs the snkrfinder module...
+- snkrfinder.core -> snkrfinder (utils)
+
+- snkrfinder.data -> snkrfinder.data
+
+- snkrfinder.model -> snkrfinder.model (.core .cvae .transfer)
+
+- snkrfinder.widget -> snkrfinder.widget
+
+
+
+NOTE:  symbolic link in the nbs directory to enable the module loads in these notebooks.  i.e. `ln -s ../snkrfinder/ snkrfinder`
+
+
 ## How to use
 
 Fill me in please! Don't forget code examples:
