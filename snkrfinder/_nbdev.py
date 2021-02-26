@@ -45,7 +45,8 @@ index = {"get_home": "00_core.ipynb",
          "extract_brand_sns": "01_data.core.ipynb",
          "extract_db_nm": "01_data.core.ipynb",
          "get_scraped_db": "01_data.core.ipynb",
-         "merge_dbs": "01_data.core.ipynb"}
+         "merge_dbs": "01_data.core.ipynb",
+         "extract_zap_sneakers": "01_data.core.ipynb"}
 
 modules = ["core.py",
            "data/core.py"]

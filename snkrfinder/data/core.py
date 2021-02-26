@@ -2,7 +2,7 @@
 
 __all__ = ['get_zappos_db', 'read_zappos_meta', 'simplify_zappos_db', 'skl_tt_split', 'add_subdir',
            'creat_full_local_categorydirs', 'create_test_train_directories', 'extract_cat', 'extract_brand_goat',
-           'extract_brand_sns', 'extract_db_nm', 'get_scraped_db', 'merge_dbs']
+           'extract_brand_sns', 'extract_db_nm', 'get_scraped_db', 'merge_dbs', 'extract_zap_sneakers']
 
 # Cell
 from ..imports import *
@@ -305,3 +305,8 @@ def merge_dbs(df_zappos,df_scraped):
     "could be any dfs with 'path','train','test','validate','t_t_v'"
     # TODO:  add "is_valid" wiich is test and (so validate are part of test)?)
     return pd.merge(df_zappos,df_scraped,how='outer',on=['path','train','test','validate','t_t_v'])
+
+# Cell
+
+def extract_zap_sneakers(df_zappos):
+    return df_zappos[df_zappos['Sneakers']]
