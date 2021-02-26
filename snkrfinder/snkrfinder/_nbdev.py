@@ -140,8 +140,8 @@ modules = ["core.py",
            "model/cvae.py",
            "widgets.py"]
 
-doc_url = "https://ergonyc.github.io/snkrfinder/"
+doc_url = "https://ergonyc.github.io/snkr-finder/"
 
-git_url = "https://github.com/ergonyc/snkrfinder/tree/master/"
+git_url = "https://github.com/ergonyc/snkr-finder/tree/master"
 
 def custom_doc_links(name): return None

@@ -10,14 +10,11 @@ entries:
       title: Overview
       url: /
     - output: web,pdf
-      title: snkrfinder
+      title: snkrfinder.core
       url: /core
     - output: web,pdf
-      title: snkrfinder.data.zappos
-      url: /data.zappos
-    - output: web,pdf
-      title: snkrfinder.data.scraped
-      url: /data.scraped
+      title: snkrfinder.data
+      url: /data
     - output: web,pdf
       title: first snkrfinder.model.core
       url: /model.core
@@ -25,8 +22,8 @@ entries:
       title: first snkrfinder.model.transfer
       url: /model.transfer
     - output: web,pdf
-      title: first snkrfinder.cvae b
-      url: /latenttarget_cvae
+      title: first snkrfinder.model.cvae
+      url: /model.cvae
     - output: web,pdf
       title: first snkrfinder.widgets
       url: /widgets

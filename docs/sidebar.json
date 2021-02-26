@@ -1,12 +1,11 @@
 {
   "snkrfinder": {
     "Overview": "/",
-    "snkrfinder": "/core",
-    "snkrfinder.data.zappos": "/data.zappos",
-    "snkrfinder.data.scraped": "/data.scraped",
+    "snkrfinder.core": "/core",
+    "snkrfinder.data": "/data",
     "first snkrfinder.model.core": "/model.core",
     "first snkrfinder.model.transfer": "/model.transfer",
-    "first snkrfinder.cvae b": "/latenttarget_cvae",
+    "first snkrfinder.model.cvae": "/model.cvae",
     "first snkrfinder.widgets": "/widgets"
   }
 }
