@@ -3,6 +3,10 @@
     "Overview": "/",
     "snkrfinder.core": "/core",
     "snkrfinder.data.munge": "/data.munge",
-    "snkrfinder.data.core": "/data.load"
+    "snkrfinder.data.core": "/data.load",
+    "first snkrfinder.model.core": "/model.core",
+    "first snkrfinder.model.transfer": "/model.transfer",
+    "first snkrfinder.model.cvae": "/model.cvae",
+    "first snkrfinder.widgets.core": "/widgets.feats"
   }
 }

@@ -18,6 +18,18 @@ entries:
     - output: web,pdf
       title: snkrfinder.data.core
       url: /data.load
+    - output: web,pdf
+      title: first snkrfinder.model.core
+      url: /model.core
+    - output: web,pdf
+      title: first snkrfinder.model.transfer
+      url: /model.transfer
+    - output: web,pdf
+      title: first snkrfinder.model.cvae
+      url: /model.cvae
+    - output: web,pdf
+      title: first snkrfinder.widgets.core
+      url: /widgets.feats
     output: web
     title: snkrfinder
   output: web
