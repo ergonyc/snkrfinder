@@ -1,0 +1,139 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#hide\n",
+    "# from snkrfinder.core import * \n",
+    "# from snkrfinder.data import *\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# snkr-finder\n",
+    "\n",
+    "> this repository / module are used to develop the fastai API version of Sneaker Finder:  a tool to help find sneakers similar to what you like!\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "WARNING!!!  WORK IN PROGRESS.. PROCEED WITH EXTREME CAUTION \n",
+    "\n",
+    "- Andy 13Feb, 2021"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Install"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "`pip install snkr-finder`\n",
+    "\n",
+    "which makes teh snkrfinder module...\n",
+    "\n",
+    "- snkrfinder.core -> snkrfinder (utils)\n",
+    "\n",
+    "- snkrfinder.data -> snkrfinder.data\n",
+    "\n",
+    "- snkrfinder.model -> snkrfinder.model\n",
+    "\n",
+    "- snkrfinder.viz -> snkrfinder.viz\n",
+    "\n",
+    "\n",
+    "\n",
+    "NOTE:  symbolic link in the nbs directory to enable the module loads in these notebooks.  i.e. `ln -s ../snkrfinder/ snkrfinder`"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## How to use"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "There are several sets of tools:\n",
+    "\n",
+    "- data ingestion / setup\n",
+    "- feature extraction\n",
+    "- \"similarity\" finding\n",
+    "- visualization\n",
+    "- widget/GUI\n",
+    "- transfer learning  (modeling)\n",
+    "- CVAE models to learn a compact latent space representaiton of sneakers for use in recommenders or generative design tools (snkr-math)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from snkrfinder.core import *"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from snkrfinder.data import *"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "SyntaxError",
+     "evalue": "'return' outside function (model.py, line 160)",
+     "output_type": "error",
+     "traceback": [
+      "Traceback \u001b[0;36m(most recent call last)\u001b[0m:\n",
+      "  File \u001b[1;32m\"/home/ergonyc/anaconda3/envs/fastai/lib/python3.8/site-packages/IPython/core/interactiveshell.py\"\u001b[0m, line \u001b[1;32m3417\u001b[0m, in \u001b[1;35mrun_code\u001b[0m\n    exec(code_obj, self.user_global_ns, self.user_ns)\n",
+      "\u001b[0;36m  File \u001b[0;32m\"<ipython-input-5-3761a38ed1f5>\"\u001b[0;36m, line \u001b[0;32m1\u001b[0;36m, in \u001b[0;35m<module>\u001b[0;36m\u001b[0m\n\u001b[0;31m    from snkrfinder.model import *\u001b[0m\n",
+      "\u001b[0;36m  File \u001b[0;32m\"/home/ergonyc/Projects/Project2.0/snkr-finder/nbs/snkrfinder/model.py\"\u001b[0;36m, line \u001b[0;32m160\u001b[0m\n\u001b[0;31m    return df2\u001b[0m\n\u001b[0m    ^\u001b[0m\n\u001b[0;31mSyntaxError\u001b[0m\u001b[0;31m:\u001b[0m 'return' outside function\n"
+     ]
+    }
+   ],
+   "source": [
+    "from snkrfinder.model import *"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
