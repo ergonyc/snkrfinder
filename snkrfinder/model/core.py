@@ -299,7 +299,6 @@ def load_and_prep_sneaker(image_path,size=IMG_SIZE,to_cuda=False):
 
 # Cell
 
-
 load_and_prep_tf_pipe = Pipeline([PILImage.create,
                  #BUG: pass split_idx=1 to avoid funny business
                  FeatsResize(size=IMG_SIZE, method='pad', pad_mode='border'),

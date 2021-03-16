@@ -4,7 +4,7 @@ __all__ = ['get_home', 'HOME', 'dump_pickle', 'load_pickle', 'add_time_stamp', '
            'ZAPPOS_META_DIR', 'SCRAPED_META_DIR', 'IMG_SIZE_LG', 'IMG_SIZE_MD', 'IMG_SIZE_SM', 'IMG_SIZE', 'IMG_SIZES',
            'IMSZ2LAB', 'SIZE_ABBR', 'ZAPPOS_DF_SIMPLIFIED', 'ZAPPOS_FEATS_ALL', 'ZAPPOS_FEATS_ALL_SORT',
            'ZAPPOS_FEATS_SM', 'ZAPPOS_FEATS_MD', 'ZAPPOS_FEATS_LG', 'SCRAPED_DF', 'COMBINED_DF', 'QUERY_IM',
-           'QUERY_IM2', 'BETA', 'LATENT_DIM', 'mobilenet_v2_meta']
+           'QUERY_IM2', 'BETA', 'LATENT_DIM', 'mobilenet_v2_meta', 'OUT_RANGE']
 
 # Cell
 from .imports import *
@@ -41,7 +41,7 @@ def add_time_stamp(filepath=""):
 
 
 # DEFAULT PARAMS
-L_ROOT = get_home()/'Projects/Project2.0/snkr-finder'
+L_ROOT = get_home()/'Projects/Project2.0/snkrfinder'
 D_ROOT = get_home()/'Projects/DATABASE'
 
 DBS_REL = {"zappos": "zappos/ut-zap50k-images",
@@ -90,7 +90,7 @@ QUERY_IM2 = 'figs/491212_01.jpg.jpeg'
 
 # VAE PARAMETERS
 # differential weighting for the beta VAE MSE/(#latents) vs beta_weight*KLD/(#pixels)
-BETA = .1
+BETA = 2
 LATENT_DIM = 128
 
 # Cell
@@ -101,3 +101,7 @@ def _mobilenet_v2_split(m:torch.nn.Module):
 mobilenet_v2_meta   = {'cut':-1, 'split':_mobilenet_v2_split, 'stats':imagenet_stats}
 
 model_meta[torchvision.models.mobilenet_v2] = {**mobilenet_v2_meta}
+
+# Cell
+
+OUT_RANGE = [-2.64,2.64]
