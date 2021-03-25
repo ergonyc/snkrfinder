@@ -5,12 +5,12 @@ __all__ = ['prep_df_for_datablocks', 'get_ae_btfms', 'get_ae_no_aug', 'TensorPoi
            'UpsampleBlock', 'LatentLayer', 'AEEncoder', 'AEDecoder', 'build_AE_encoder', 'build_AE_decoder', 'AE',
            'AELoss', 'MyMetric', 'L1LatentReg', 'KLDiv', 'L2MeanMetric', 'L1MeanMetric', 'L2Metric', 'L1Metric',
            'L2BMeanMetric', 'L1BMeanMetric', 'KLWeightMetric', 'RawKLDMetric', 'WeightedKLDMetric', 'MuMetric',
-           'MuSDMetric', 'StdMetric', 'StdSDMetric', 'LogvarMetric', 'LogvarSDMetric', 'AnnealedLossCallback',
-           'default_KL_anneal_in', 'bn_splitter', 'resnetVAE_split', 'AE_split', 'default_AE_metrics', 'get_conv_parts',
-           'get_pretrained_parts', 'get_encoder_parts', 'VAELinear', 'VAELayer', 'get_pretrained_parts', 'BVAELoss',
-           'default_VAE_metrics', 'MMDVAE', 'gaussian_kernel', 'MaxMeanDiscrepancy', 'MMDLoss', 'MMDMetric',
-           'short_MMEVAE_metrics', 'default_MMEVAE_metrics', 'UpsampleResBlock', 'get_resblockencoder_parts',
-           'ResBlockAEDecoder', 'build_ResBlockAE_decoder', 'ResBlockAE']
+           'MuSDMetric', 'StdMetric', 'StdSDMetric', 'LogvarMetric', 'LogvarSDMetric', 'default_AE_metrics',
+           'AnnealedLossCallback', 'default_KL_anneal_in', 'bn_splitter', 'resnetVAE_split', 'AE_split',
+           'get_conv_parts', 'get_pretrained_parts', 'get_encoder_parts', 'VAELinear', 'VAELayer',
+           'get_pretrained_parts', 'BVAELoss', 'default_VAE_metrics', 'MMDVAE', 'gaussian_kernel', 'MaxMeanDiscrepancy',
+           'MMDLoss', 'MMDMetric', 'short_MMEVAE_metrics', 'default_MMEVAE_metrics', 'UpsampleResBlock',
+           'get_resblockencoder_parts', 'ResBlockAEDecoder', 'build_ResBlockAE_decoder', 'ResBlockAE']
 
 # Cell
 from ..imports import *
@@ -443,7 +443,7 @@ class AELoss(Module):
         return total
 
 # Cell
-# test: if i call them preds instead of vals might the Metric base class reset automatically?
+
 class MyMetric(Metric):
     "for simple average over batch quantities"
     def reset(self):
@@ -664,6 +664,29 @@ class LogvarSDMetric(MyMetric):
 
 # Cell
 
+def default_AE_metrics(alpha,batchmean,useL1):
+    "long default list of metrics for the VAE"
+
+    first = L2BMeanMetric() if batchmean else L2MeanMetric()
+    second = L1BMeanMetric() if batchmean else L2MeanMetric()
+
+    if useL1: first,second = second,first
+
+    metrics = [first,
+                MuMetric(),
+                StdMetric(),
+                LogvarMetric(),
+                second,
+                WeightedKLDMetric(batchmean=batchmean,alpha=alpha),
+                L1LatentReg(batchmean=batchmean,alpha=alpha),
+                MuSDMetric(),
+                LogvarSDMetric(),
+               ]
+    return metrics
+
+
+# Cell
+
 class AnnealedLossCallback(Callback):
     def after_pred(self):
         kl_weight = self.learn.pred[0].new(1)
@@ -708,29 +731,6 @@ def AE_split(m):
 
 
 
-# TODO:  more sophisticated parameter splitting to enable progressive learning rates
-
-# Cell
-
-def default_AE_metrics(alpha,batchmean,useL1):
-    "long default list of metrics for the VAE"
-
-    first = L2BMeanMetric() if batchmean else L2MeanMetric()
-    second = L1BMeanMetric() if batchmean else L2MeanMetric()
-
-    if useL1: first,second = second,first
-
-    metrics = [first,
-                MuMetric(),
-                StdMetric(),
-                LogvarMetric(),
-                second,
-                WeightedKLDMetric(batchmean=batchmean,alpha=alpha),
-                L1LatentReg(batchmean=batchmean,alpha=alpha),
-                MuSDMetric(),
-                LogvarSDMetric(),
-               ]
-    return metrics
 
 
 # Cell
@@ -1190,7 +1190,7 @@ def build_ResBlockAE_decoder(hidden_dim=None, latent_dim=128, im_size=IMG_SIZE,o
 
 
 class ResBlockAE(AE):
-    def __init__(self,enc_parts,hidden_dim=None, latent_dim=128, im_size=IMG_SIZE,out_range=OUT_RANGE):
+    def __init__(self,enc_parts,hidden_dim=None, latent_dim=128, im_size=IMG_SIZE,out_range=OUT_RANGE,isVAE=False):
 
         """
         inputs:
@@ -1211,12 +1211,15 @@ class ResBlockAE(AE):
         in_dim = enc_dim if hidden_dim is None else hidden_dim
 
         # AE Bottleneck
-        self.bn = LatentLayer(in_dim,latent_dim)
+        latent = VAELayer if isVAE else LatentLayer
+
+        self.bn = latent(in_dim,latent_dim)
 
         #decoder
         self.decoder = build_ResBlockAE_decoder(hidden_dim=hidden_dim, latent_dim=latent_dim, im_size=im_size,out_range=out_range)
 
         store_attr('name,enc_dim, in_dim,hidden_dim,latent_dim,im_size,out_range') # do i need all these?
+
 
 
 
