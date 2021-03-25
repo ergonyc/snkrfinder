@@ -6,11 +6,12 @@ __all__ = ['prep_df_for_datablocks', 'get_ae_btfms', 'get_ae_no_aug', 'TensorPoi
            'AELoss', 'MyMetric', 'L1LatentReg', 'KLDiv', 'L2MeanMetric', 'L1MeanMetric', 'L2Metric', 'L1Metric',
            'L2BMeanMetric', 'L1BMeanMetric', 'KLWeightMetric', 'RawKLDMetric', 'WeightedKLDMetric', 'MuMetric',
            'MuSDMetric', 'StdMetric', 'StdSDMetric', 'LogvarMetric', 'LogvarSDMetric', 'default_AE_metrics',
-           'AnnealedLossCallback', 'default_KL_anneal_in', 'bn_splitter', 'resnetVAE_split', 'AE_split',
-           'get_conv_parts', 'get_pretrained_parts', 'get_encoder_parts', 'VAELinear', 'VAELayer',
-           'get_pretrained_parts', 'BVAELoss', 'default_VAE_metrics', 'MMDVAE', 'gaussian_kernel', 'MaxMeanDiscrepancy',
-           'MMDLoss', 'MMDMetric', 'short_MMEVAE_metrics', 'default_MMEVAE_metrics', 'UpsampleResBlock',
-           'get_resblockencoder_parts', 'ResBlockAEDecoder', 'build_ResBlockAE_decoder', 'ResBlockAE']
+           'short_AE_metrics', 'AnnealedLossCallback', 'default_KL_anneal_in', 'bn_splitter', 'resnetVAE_split',
+           'AE_split', 'get_conv_parts', 'get_pretrained_parts', 'get_encoder_parts', 'VAELinear', 'VAELayer', 'BVAE',
+           'get_pretrained_parts', 'BVAELoss', 'default_VAE_metrics', 'short_VAE_metrics', 'MMDVAE', 'gaussian_kernel',
+           'MaxMeanDiscrepancy', 'MMDLoss', 'MMDMetric', 'short_MMEVAE_metrics', 'default_MMEVAE_metrics',
+           'UpsampleResBlock', 'get_resblockencoder_parts', 'ResBlockAEDecoder', 'build_ResBlockAE_decoder',
+           'ResBlockAE']
 
 # Cell
 from ..imports import *
@@ -84,6 +85,8 @@ class TensorPoint(TensorBase):
 
 
 class Tensor2Vect(TensorPoint): pass
+# TODO:  instantiate a show method
+
 
 class LatentsTensor(Tensor2Vect):
     "Basic type for latents as Tensor inheriting from TensorPoint (vectors)"
@@ -196,7 +199,8 @@ def get_ae_DataBlock(aug=True,im_path=L_ROOT/"data",stats = 'sneaker'):
 class UpsampleBlock(Module):
     def __init__(self, up_in_c:int, final_div:bool=True, blur:bool=False, **kwargs):
         """
-        up_in_c :  "Upsample input channel"
+        Upsampling using PixelShuffle_INCR and ConvLayer
+            - up_in_c :  "Upsample input channel"
         """
         self.shuf = PixelShuffle_ICNR(up_in_c, up_in_c//2, blur=blur, **kwargs)
         ni = up_in_c//2
@@ -207,6 +211,7 @@ class UpsampleBlock(Module):
     def forward(self, up_in:Tensor) -> Tensor:
         up_out = self.shuf(up_in)
         return self.conv2(self.conv1(up_out))
+
 
 
 
@@ -265,11 +270,11 @@ class AEEncoder(Module):
 class AEDecoder(Module):
     def __init__(self, hidden_dim=None, latent_dim=128, im_size=IMG_SIZE,out_range=OUT_RANGE):
         """
-
-        latent_dim,
-        hidden_dim. number of linear features to sandwich between the latent and the decoder
-        im_size,
-        out_range
+        Decoder Module made of `UpsampleBlock`s returning the latent representation back into an "image"
+            latent_dim - dimension of latent representation
+            hidden_dim - optional additional linear layer between the latent and decoder
+            im_size - passed to make sure we are scaling back to the right size
+            out_range - ensures the output is on teh same scale as the _normalized_ input image
         """
         #decoder
         n_blocks = 5
@@ -445,7 +450,7 @@ class AELoss(Module):
 # Cell
 
 class MyMetric(Metric):
-    "for simple average over batch quantities"
+    "meta-class for simple average over epoch metric quantities"
     def reset(self):
         "Clear all targs and preds"
         self.vals = []
@@ -454,7 +459,7 @@ class MyMetric(Metric):
         return np.array(self.vals).mean()
 
 class L1LatentReg(MyMetric):
-    " sum reduction scaled to pixels/latents"
+    "Latent Regularizer with sum reduction and optinal batchmean scaling"
     def __init__(self,batchmean=False,alpha=1.0):
         vals = []
         store_attr('vals,batchmean,alpha')
@@ -482,9 +487,8 @@ def _KLD(mu,logvar):
 
 class KLDiv(Module):
     """
-    Measures how well we have created the original image,
-    plus the KL Divergence with the unit normal distribution
-    batchmean option sums first and averages over batches (for smaller total error magnitudes.. cosmentic)
+    Module for computing the KL Divergence from a unit normal distribution.
+    'batchmean' option sums first and averages over batches
     """
     def __init__(self, batchmean=False):
         """
@@ -514,7 +518,7 @@ class KLDiv(Module):
 # Cell
 
 class L2MeanMetric(MyMetric):
-    " mean reduction "
+    "Mean square error"
     def __init__(self): self.vals = []
     def accumulate(self, learn):
         x = to_detach(learn.y[0])
@@ -524,7 +528,7 @@ class L2MeanMetric(MyMetric):
         self.vals.append(nll)
 
 class L1MeanMetric(MyMetric):
-    " mean reduction "
+    "Mean absolute error"
     def __init__(self): self.vals = []
     def accumulate(self, learn):
         x = to_detach(learn.y[0])
@@ -534,7 +538,7 @@ class L1MeanMetric(MyMetric):
         self.vals.append(nll)
 
 class L2Metric(MyMetric):
-    " sum reduction "
+    "Sum square error"
     def __init__(self): self.vals = []
     def accumulate(self, learn):
         x = to_detach(learn.y[0])
@@ -544,7 +548,7 @@ class L2Metric(MyMetric):
         self.vals.append(nll)
 
 class L1Metric(MyMetric):
-    " sum reduction "
+    "Sum absolute error"
     def __init__(self): self.vals = []
     def accumulate(self, learn):
         x = to_detach(learn.y[0])
@@ -555,7 +559,7 @@ class L1Metric(MyMetric):
 
 
 class L2BMeanMetric(MyMetric):
-    " sum average across batch "
+    "Summed square error average across batch "
     def __init__(self): self.vals = []
     def accumulate(self, learn):
         x = to_detach(learn.y[0])
@@ -565,7 +569,7 @@ class L2BMeanMetric(MyMetric):
         self.vals.append(nll)
 
 class L1BMeanMetric(MyMetric):
-    " sum average across batch "
+    "Summed abs error average across batch "
     def __init__(self): self.vals = []
     def accumulate(self, learn):
         x = to_detach(learn.y[0])
@@ -576,6 +580,7 @@ class L1BMeanMetric(MyMetric):
 
 
 class KLWeightMetric(MyMetric):
+    "Injected KLD weighting"
     def __init__(self): self.vals = []
     def accumulate(self, learn):
         #kl = learn.model.kl_weight
@@ -584,6 +589,7 @@ class KLWeightMetric(MyMetric):
 
 
 class RawKLDMetric(MyMetric):
+    "KLD Metric, `batchmean` averages across batches"
     def __init__(self,batchmean=False):
         vals = []
         _KLD = KLDiv(batchmean=batchmean)
@@ -596,6 +602,9 @@ class RawKLDMetric(MyMetric):
         self.vals.append(to_detach(kld))
 
 class WeightedKLDMetric(MyMetric):
+    """weighted KLD Metric, `batchmean` averages across batches
+            the "effective" KLD regularization in e.g. a 𝜷-BAE
+    """
     def __init__(self,batchmean=False,alpha=1.0):
         vals = []
         _KLD = KLDiv(batchmean=batchmean)
@@ -613,6 +622,7 @@ class WeightedKLDMetric(MyMetric):
 
 
 class MuMetric(MyMetric):
+    "average latent value (e.g. avg(`mu`)"
     def __init__(self): self.vals = []
     def accumulate(self, learn):
         latents = to_detach(learn.pred[1])
@@ -621,6 +631,7 @@ class MuMetric(MyMetric):
 
 
 class MuSDMetric(MyMetric):
+    "standard deviation of latent 𝝁 value (e.g. std(`mu`) )"
     def __init__(self): self.vals = []
     def accumulate(self, learn):
         latents = to_detach(learn.pred[1])
@@ -629,6 +640,7 @@ class MuSDMetric(MyMetric):
 
 
 class StdMetric(MyMetric):
+    "average of latent 𝝈 value (e.g. std(exp(.5*`logvar`) )"
     def __init__(self): self.vals = []
     def accumulate(self, learn):
         latents = learn.pred[1]
@@ -637,6 +649,7 @@ class StdMetric(MyMetric):
         self.vals.append(to_detach(std))
 
 class StdSDMetric(MyMetric):
+    "standard deviation of latent 𝝈 value (e.g. std(exp(.5*`logvar`) )"
     def __init__(self): self.vals = []
     def accumulate(self, learn):
         latents = learn.pred[1]
@@ -645,6 +658,7 @@ class StdSDMetric(MyMetric):
         self.vals.append(to_detach(std))
 
 class LogvarMetric(MyMetric):
+    "average of latent log(𝝈*𝝈) value (e.g. mean(`logvar`))"
     def __init__(self): self.vals = []
     def accumulate(self, learn):
         latents = to_detach(learn.pred[1])
@@ -652,6 +666,7 @@ class LogvarMetric(MyMetric):
         self.vals.append(logvar.mean())
 
 class LogvarSDMetric(MyMetric):
+    "standard deviation of latent log(𝝈*𝝈)  value (e.g. std(`logvar`)"
     def __init__(self): self.vals = []
     def accumulate(self, learn):
         latents = to_detach(learn.pred[1])
@@ -665,7 +680,7 @@ class LogvarSDMetric(MyMetric):
 # Cell
 
 def default_AE_metrics(alpha,batchmean,useL1):
-    "long default list of metrics for the VAE"
+    "long-ish default list of metrics for the AE"
 
     first = L2BMeanMetric() if batchmean else L2MeanMetric()
     second = L1BMeanMetric() if batchmean else L2MeanMetric()
@@ -673,14 +688,28 @@ def default_AE_metrics(alpha,batchmean,useL1):
     if useL1: first,second = second,first
 
     metrics = [first,
+                L1LatentReg(batchmean=batchmean,alpha=alpha),
                 MuMetric(),
                 StdMetric(),
                 LogvarMetric(),
                 second,
                 WeightedKLDMetric(batchmean=batchmean,alpha=alpha),
-                L1LatentReg(batchmean=batchmean,alpha=alpha),
                 MuSDMetric(),
                 LogvarSDMetric(),
+               ]
+    return metrics
+
+def short_AE_metrics(alpha,batchmean,useL1):
+    "short default list of metrics for the AE"
+
+    first = L2BMeanMetric() if batchmean else L2MeanMetric()
+    second = L1BMeanMetric() if batchmean else L2MeanMetric()
+
+    if useL1: first,second = second,first
+
+    metrics = [first,
+                L1LatentReg(batchmean=batchmean,alpha=alpha),
+                MuMetric(),
                ]
     return metrics
 
@@ -688,6 +717,7 @@ def default_AE_metrics(alpha,batchmean,useL1):
 # Cell
 
 class AnnealedLossCallback(Callback):
+    "injects `kl_weight` for access during loss function calculation"
     def after_pred(self):
         kl_weight = self.learn.pred[0].new(1)
         kl_weight[0] = self.opt.hypers[0]['kl_weight']
@@ -698,7 +728,7 @@ class AnnealedLossCallback(Callback):
 
 
 def default_KL_anneal_in():
-    #return combine_scheds([.1, .7, .2], [SchedNo(0,0),SchedCos(0,1), SchedNo(1,1)])
+    "reasonable default for 'warming up' the KL Div"
     return combine_scheds([ .7, .3], [SchedCos(0,1), SchedNo(1,1)])
 
 # Cell
@@ -717,6 +747,7 @@ def bn_splitter(m):
     return g1,g2
 
 def resnetVAE_split(m):
+    "simple splitter to freeze the non batch norm pre-trained encoder"
     to_freeze, dont_freeze = bn_splitter(m.encoder)
     #return L(to_freeze, dont_freeze + params(m.bn)+params(m.dec[:2]), params(m.dec[2:]))
     return L(to_freeze, dont_freeze + params(m.bn)+params(m.decoder))
@@ -725,7 +756,7 @@ def resnetVAE_split(m):
 
 
 def AE_split(m):
-    "generic splitter for my AE classes- BVAE & AE & MMDVAE.."
+    "generic splitter for my AE classes- BVAE & AE & MMDVAE."
     to_freeze, dont_freeze = bn_splitter(m.encoder)
     return L(to_freeze, dont_freeze + params(m.bn)+params(m.decoder))
 
@@ -812,6 +843,87 @@ class VAELayer(Module):
 
 
 # Cell
+### TODO:  refactor the BVAE and AE to a single architecture... with a "sample" function ot
+
+class BVAE(AE):
+    """
+    simple VAE made with an encoder passed in, and some builder function for the Latent (VAE reparam trick) and decoder
+    """
+    def __init__(self,enc_parts,hidden_dim=None, latent_dim=128, im_size=IMG_SIZE,out_range=OUT_RANGE):
+
+        """
+        inputs:
+            enc_arch (pre-cut / pretrained)
+            enc_dim
+            latent_dim
+            hidden_dim
+            im_size,out_range
+        """
+        enc_arch,enc_feats,name = enc_parts
+
+        # encoder
+        #  arch,cut = xresnet18(pretrained=True),-4
+        #  enc_arch = list(arch.children())[:cut]
+
+        BASE = im_size//2**5
+        enc_dim = enc_feats * BASE**2  # 2**(3*3) * (im_size//32)**2 #(output of resneet) #12800
+
+        self.encoder = build_AE_encoder(enc_arch,enc_dim=enc_dim, hidden_dim=hidden_dim, im_size=im_size)
+
+        in_dim = enc_dim if hidden_dim is None else hidden_dim
+
+        # VAE Bottleneck
+        self.bn = VAELayer(in_dim,latent_dim)
+
+        #decoder
+        self.decoder = build_AE_decoder(hidden_dim=hidden_dim, latent_dim=latent_dim, im_size=im_size,out_range=out_range)
+
+        store_attr('name,enc_dim, in_dim,hidden_dim,latent_dim,im_size,out_range') # do i need all these?
+
+
+#     def decode(self, z):
+#         return self.decoder(z)
+
+#     def encode(self, x):
+#         h = self.encoder(x)
+#         z, mu, logvar = self.bn(h) # reparam happens in the VAE layer
+#         return z, mu, logvar
+
+#     def forward(self, x):
+#         #z, mu, logvar = self.encode(x)
+#         #         h = self.encoder(x)
+#         #         z, mu, logvar = self.bn(h) # reparam happens in the VAE layer
+#         #         x_hat = self.decoder(z)
+
+#         z,mu,logvar = self.encode(x)
+#         x_hat = self.decode(z)
+#         latents = torch.stack([mu,logvar],dim=-1)
+
+#         return x_hat, latents # assume dims are [batch,latent_dim,concat_dim]
+
+
+# # AE
+#    def decode(self, z):
+#         return self.decoder(z)
+
+#     def encode(self, x):
+#         h = self.encoder(x)
+#         return self.bn(h)
+
+#     def forward(self, x):
+#         """
+#         pass the "latents" out to keep the learn mechanics consistent...
+#         """
+#         h = self.encoder(x)
+#         z,logvar = self.bn(h)
+#         x_hat = self.decoder(z)
+#         latents = torch.stack([z,logvar] ,dim=-1)
+
+#         return x_hat , latents
+
+
+
+# Cell
 def get_pretrained_parts(arch=resnet18):
     "this works for mobilnet_v2, resnet, and xresnet"
     cut = model_meta[arch]['cut']
@@ -891,6 +1003,26 @@ def default_VAE_metrics(alpha,batchmean,useL1):
                 LogvarSDMetric(),
                ]
     return metrics
+
+
+
+def short_VAE_metrics(alpha,batchmean,useL1):
+    "short default list of metrics for the AE"
+
+    first = L2BMeanMetric() if batchmean else L2MeanMetric()
+    second = L1BMeanMetric() if batchmean else L2MeanMetric()
+
+    if useL1: first,second = second,first
+
+    metrics = [first,
+                MuMetric(),
+                StdMetric(),
+                LogvarMetric(),
+                WeightedKLDMetric(batchmean=batchmean,alpha=alpha)
+               ]
+    return metrics
+
+
 
 
 # Cell
@@ -1052,7 +1184,6 @@ def short_MMEVAE_metrics(alpha,batchmean,useL1):
     metrics = [first,
                 MMDMetric(batchmean=batchmean,alpha=alpha),
                 MuMetric(),
-                second,
                 MuSDMetric(),
                 ]
     return metrics
@@ -1069,9 +1200,9 @@ def default_MMEVAE_metrics(alpha,batchmean,useL1):
                 MMDMetric(batchmean=batchmean,alpha=alpha),
                 MuMetric(),
                 StdMetric(),
-                LogvarMetric(),
                 second,
                 MuSDMetric(),
+                LogvarMetric(),
                 L1LatentReg(batchmean=batchmean,alpha=alpha),
                 WeightedKLDMetric(batchmean=batchmean,alpha=alpha),
                 LogvarSDMetric()]
@@ -1084,7 +1215,8 @@ def default_MMEVAE_metrics(alpha,batchmean,useL1):
 class UpsampleResBlock(Module):
     def __init__(self, up_in_c:int, final_div:bool=True, blur:bool=False, **kwargs):
         """
-        up_in_c :  "Upsample input channel"
+        Upsampling using PixelShuffle_INCR and ResBlocks
+        - up_in_c :  "Upsample input channel"
         """
         self.shuf = PixelShuffle_ICNR(up_in_c, up_in_c//2, blur=blur, **kwargs)
         ni = up_in_c//2
@@ -1100,10 +1232,7 @@ class UpsampleResBlock(Module):
 
 def get_resblockencoder_parts(enc_type='vanilla',im_size=IMG_SIZE):
     """
-    make a simple convolutional ladder encoder
-    TODO:  make a switch on enc_type
-        - vanilla, resnet or vanilla-res
-        -TODO: change to 'convblock' and 'resblock'
+    make a simple (hence 'vanilla') convolutional ladder encoder with ResBlock parts
     """
     n_blocks = 5
     BASE = im_size//2**5
@@ -1149,11 +1278,11 @@ def get_resblockencoder_parts(enc_type='vanilla',im_size=IMG_SIZE):
 class ResBlockAEDecoder(Module):
     def __init__(self, hidden_dim=None, latent_dim=128, im_size=IMG_SIZE,out_range=OUT_RANGE):
         """
-
-        latent_dim,
-        hidden_dim,
-        im_size,
-        out_range
+        Decoder Module made of ResBlocks returning the latent representation back into an "image"
+            latent_dim - dimension of latent representation
+            hidden_dim - optional additional linear layer between the latent and decoder
+            im_size - passed to make sure we are scaling back to the right size
+            out_range - ensures the output is on teh same scale as the _normalized_ input image
         """
         #decoder
         n_blocks = 5
@@ -1194,10 +1323,12 @@ class ResBlockAE(AE):
 
         """
         inputs:
-            arch, cut,pretrained
-            enc_dim
-            latent_dim
-            hidden_dim
+            enc_parts - encoder architecture
+            latent_dim - dimension of latent representation
+            hidden_dim - optional additional linear layer between the latent and decoder
+            im_size - passed to make sure we are scaling back to the right size
+            out_range - ensures the output is on teh same scale as the _normalized_ input image
+            isVae - switch for the type of latent representation
 
         """
         enc_arch,enc_feats,name = enc_parts
