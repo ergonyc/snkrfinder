@@ -4,7 +4,8 @@ __all__ = ['get_home', 'HOME', 'dump_pickle', 'load_pickle', 'add_time_stamp', '
            'ZAPPOS_META_DIR', 'SCRAPED_META_DIR', 'IMG_SIZE_LG', 'IMG_SIZE_MD', 'IMG_SIZE_SM', 'IMG_SIZE', 'IMG_SIZES',
            'IMSZ2LAB', 'SIZE_ABBR', 'ZAPPOS_DF_SIMPLIFIED', 'ZAPPOS_FEATS_ALL', 'ZAPPOS_FEATS_ALL_SORT',
            'ZAPPOS_FEATS_SM', 'ZAPPOS_FEATS_MD', 'ZAPPOS_FEATS_LG', 'SCRAPED_DF', 'COMBINED_DF', 'QUERY_IM',
-           'QUERY_IM2', 'BETA', 'LATENT_DIM', 'mobilenet_v2_meta', 'OUT_RANGE']
+           'QUERY_IM2', 'BETA', 'LATENT_DIM', 'mobilenet_v2_meta', 'IM_STATS', 'DEFAULT_STATS', 'IMAGENET_OUT_RANGE',
+           'MY_OUT_RANGE', 'OUT_RANGE']
 
 # Cell
 from .imports import *
@@ -103,5 +104,11 @@ mobilenet_v2_meta   = {'cut':-1, 'split':_mobilenet_v2_split, 'stats':imagenet_s
 model_meta[torchvision.models.mobilenet_v2] = {**mobilenet_v2_meta}
 
 # Cell
+IM_STATS = {'imagenet':imagenet_stats,'sneaker':([.5,.5,.5],[.5,.5,.5])}
 
-OUT_RANGE = [-2.64,2.64]
+DEFAULT_STATS = 'sneaker'
+
+IMAGENET_OUT_RANGE = [-2.64,2.64]
+MY_OUT_RANGE = [-1,1]
+
+OUT_RANGE = MY_OUT_RANGE if DEFAULT_STATS == 'sneaker' else IMAGENET_OUT_RANGE
