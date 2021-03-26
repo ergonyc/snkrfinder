@@ -8,10 +8,9 @@ __all__ = ['prep_df_for_datablocks', 'get_ae_btfms', 'get_ae_no_aug', 'TensorPoi
            'MuSDMetric', 'StdMetric', 'StdSDMetric', 'LogvarMetric', 'LogvarSDMetric', 'default_AE_metrics',
            'short_AE_metrics', 'AnnealedLossCallback', 'default_KL_anneal_in', 'bn_splitter', 'resnetVAE_split',
            'AE_split', 'get_conv_parts', 'get_pretrained_parts', 'get_encoder_parts', 'VAELinear', 'VAELayer', 'BVAE',
-           'get_pretrained_parts', 'BVAELoss', 'default_VAE_metrics', 'short_VAE_metrics', 'MMDVAE', 'gaussian_kernel',
-           'MaxMeanDiscrepancy', 'MMDLoss', 'MMDMetric', 'short_MMEVAE_metrics', 'default_MMEVAE_metrics',
-           'UpsampleResBlock', 'get_resblockencoder_parts', 'ResBlockAEDecoder', 'build_ResBlockAE_decoder',
-           'ResBlockAE']
+           'BVAELoss', 'default_VAE_metrics', 'short_VAE_metrics', 'MMDVAE', 'gaussian_kernel', 'MaxMeanDiscrepancy',
+           'MMDLoss', 'MMDMetric', 'short_MMEVAE_metrics', 'default_MMEVAE_metrics', 'UpsampleResBlock',
+           'get_resblockencoder_parts', 'ResBlockAEDecoder', 'build_ResBlockAE_decoder', 'ResBlockAE']
 
 # Cell
 from ..imports import *
@@ -176,7 +175,7 @@ def LatentTupleBlock():
 # Cell
 #
 
-def get_ae_DataBlock(aug=True,im_path=L_ROOT/"data",stats = 'sneaker'):
+def get_ae_DataBlock(aug=True,im_path=L_ROOT/"data",stats = 'sneaker',im_size=IMG_SIZE):
     "wrapper to get the standard ae datablock"
     # use partials or a class wrapper to get around this yucky hack
     global image_path
@@ -187,7 +186,7 @@ def get_ae_DataBlock(aug=True,im_path=L_ROOT/"data",stats = 'sneaker'):
               get_x=df_ae_x,
               get_y=[df_ae_y, noop], #don't need to get the LatentsTensorBlock, just create
               splitter=ColSplitter('is_valid'),
-              item_tfms= FeatsResize(IMG_SIZE,method='pad', pad_mode='border'),
+              item_tfms= FeatsResize(im_size,method='pad', pad_mode='border'),
               batch_tfms = mytfms,
               n_inp = 1)
 
@@ -278,21 +277,22 @@ class AEDecoder(Module):
         """
         #decoder
         n_blocks = 5
+        BASE = im_size//2**5
 
-        hidden = im_size*n_blocks*n_blocks if hidden_dim is None else hidden_dim
+        hidden = im_size*BASE*BASE if hidden_dim is None else hidden_dim
         z_fc = [nn.Linear(latent_dim,hidden)] # [LinBnDrop(latent_dim,hidden,bn=True,p=0.0,act=nn.ReLU(),lin_first=True)]
         if hidden_dim:  # i.e. is not None
-            z_fc += [nn.Linear(hidden,im_size*n_blocks*n_blocks)]  # should the hidden layer have activationa and/or batchnorm?
+            z_fc += [nn.Linear(hidden,im_size*BASE*BASE)]  # should the hidden layer have activationa and/or batchnorm?
             #z_fc += [LinBnDrop(hidden,im_size*n_blocks*n_blocks,bn=True,p=0.0,act=nn.ReLU(),lin_first=True)]
 
 
-        nfs = [3] + [2**i*n_blocks for i in range(n_blocks+1)]
+        nfs = [3] + [2**i*BASE for i in range(n_blocks+1)]
         nfs.reverse()
         n = len(nfs)
 
         modules =  [UpsampleBlock(nfs[i]) for i in range(n - 2)]
         self.decoder = nn.Sequential(*z_fc,
-                                      ResizeBatch(im_size,n_blocks,n_blocks),
+                                      ResizeBatch(im_size,BASE,BASE),
                                       *modules,
                                       ConvLayer(nfs[-2],nfs[-1],
                                                 ks=1,padding=0, norm_type=None, #act_cls=nn.Sigmoid) )
@@ -794,8 +794,8 @@ def get_pretrained_parts(arch=resnet18):
 
 
 
-def get_encoder_parts(enc_type='vanilla'):
-    encoder_parts = get_conv_parts() if isinstance(enc_type,str) else get_pretrained_parts(arch=enc_type)
+def get_encoder_parts(enc_type='vanilla',im_size=IMG_SIZE):
+    encoder_parts = get_conv_parts(im_size=im_size) if isinstance(enc_type,str) else get_pretrained_parts(arch=enc_type)
     return encoder_parts # returns enc_arch,enc_dim,arch.__name__
 
 
@@ -921,17 +921,6 @@ class BVAE(AE):
 
 #         return x_hat , latents
 
-
-
-# Cell
-def get_pretrained_parts(arch=resnet18):
-    "this works for mobilnet_v2, resnet, and xresnet"
-    cut = model_meta[arch]['cut']
-    name = arch.__name__
-    arch = arch(pretrained=True)
-    enc_arch = list(arch.children())[:cut]
-    enc_feats = 512
-    return enc_arch, enc_feats, name
 
 
 # Cell
@@ -1286,19 +1275,20 @@ class ResBlockAEDecoder(Module):
         """
         #decoder
         n_blocks = 5
+        BASE = im_size//2**5
 
-        hidden = im_size*n_blocks*n_blocks if hidden_dim is None else hidden_dim
+        hidden = im_size*BASE*BASE if hidden_dim is None else hidden_dim
         z_fc = [nn.Linear(latent_dim,hidden)]
         if hidden_dim:  # i.e. is not None
-            z_fc += [nn.Linear(hidden,im_size*n_blocks*n_blocks)]
+            z_fc += [nn.Linear(hidden,im_size*BASE*BASE)]
 
-        nfs = [3] + [2**i*n_blocks for i in range(n_blocks+1)]
+        nfs = [3] + [2**i*BASE for i in range(n_blocks+1)]
         nfs.reverse()
         n = len(nfs)
 
         modules =  [UpsampleResBlock(nfs[i]) for i in range(n - 2)]
         self.decoder = nn.Sequential(*z_fc,
-                                      ResizeBatch(im_size,n_blocks,n_blocks),
+                                      ResizeBatch(im_size,BASE,BASE),
                                       *modules,
                                       ResBlock(1,nfs[-2],nfs[-1],
                                                 ks=1,padding=0, norm_type=None, #act_cls=nn.Sigmoid) )
@@ -1312,7 +1302,7 @@ class ResBlockAEDecoder(Module):
 
 
 def build_ResBlockAE_decoder(hidden_dim=None, latent_dim=128, im_size=IMG_SIZE,out_range=OUT_RANGE):
-    "wrapper to sequential-ize AEDecoder class"
+    "wrapper to sequential-ize ResBlockAEDecoder class"
     decoder = ResBlockAEDecoder(hidden_dim=hidden_dim, latent_dim=latent_dim, im_size=im_size,out_range=out_range)
     return nn.Sequential(*list(decoder.children()))
 
