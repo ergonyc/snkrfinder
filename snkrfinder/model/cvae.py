@@ -3,14 +3,15 @@
 __all__ = ['prep_df_for_datablocks', 'get_ae_btfms', 'get_ae_no_aug', 'TensorPoint', 'Tensor2Vect', 'LatentsTensor',
            'df_get_x', 'df_get_y', 'LatentsTensorBlock', 'df_ae_x', 'df_ae_y', 'LatentTupleBlock', 'get_ae_DataBlock',
            'UpsampleBlock', 'LatentLayer', 'AEEncoder', 'AEDecoder', 'build_AE_encoder', 'build_AE_decoder', 'AE',
-           'AELoss', 'MyMetric', 'L1LatentReg', 'KLDiv', 'L2MeanMetric', 'L1MeanMetric', 'L2Metric', 'L1Metric',
+           'AELoss', 'MyMetric', 'L1LatentReg', 'KLD', 'KLDiv', 'L2MeanMetric', 'L1MeanMetric', 'L2Metric', 'L1Metric',
            'L2BMeanMetric', 'L1BMeanMetric', 'KLWeightMetric', 'RawKLDMetric', 'WeightedKLDMetric', 'MuMetric',
            'MuSDMetric', 'StdMetric', 'StdSDMetric', 'LogvarMetric', 'LogvarSDMetric', 'default_AE_metrics',
            'short_AE_metrics', 'AnnealedLossCallback', 'default_KL_anneal_in', 'bn_splitter', 'resnetVAE_split',
            'AE_split', 'get_conv_parts', 'get_pretrained_parts', 'get_encoder_parts', 'VAELinear', 'VAELayer', 'BVAE',
-           'BVAELoss', 'default_VAE_metrics', 'short_VAE_metrics', 'MMDVAE', 'gaussian_kernel', 'MaxMeanDiscrepancy',
-           'MMDLoss', 'MMDMetric', 'short_MMEVAE_metrics', 'default_MMEVAE_metrics', 'UpsampleResBlock',
-           'get_resblockencoder_parts', 'ResBlockAEDecoder', 'build_ResBlockAE_decoder', 'ResBlockAE']
+           'BVAELoss', 'default_VAE_metrics', 'short_VAE_metrics', 'gaussian_kernel', 'MMD', 'rawMMD', 'MMDVAE',
+           'MaxMeanDiscrepancy', 'MMDLoss', 'MMDMetric', 'short_MMEVAE_metrics', 'default_MMEVAE_metrics',
+           'UpsampleResBlock', 'get_resblockencoder_parts', 'ResBlockAEDecoder', 'build_ResBlockAE_decoder',
+           'ResBlockAE']
 
 # Cell
 from ..imports import *
@@ -24,12 +25,14 @@ from fastai.test_utils import show_install, synth_learner, nvidia_smi, nvidia_me
 # Cell
 
 def prep_df_for_datablocks(df):
-    df = df[["path","train","test","validate","t_t_v"]].copy()
+    df = df[["path","train","test","validate","t_t_v","Category"]].copy()
     # I could remove all the "test" rows... for now i'll choose an alternate strategy:
     # Drop all the "test" rows for now, and create an "is_valid" column...
     # should probably drop a ton of columns to jus tkeep the file paths...
     # just keep what we'll need below
     df.loc[:,'is_valid'] = df.test | df.validate
+    df.loc[:,'og_idx'] = df.index
+
     return df
 
 
@@ -135,30 +138,32 @@ class LatentsTensor(Tensor2Vect):
 
 # Cell
 
-# some helper functions borrowed from validating the feature embedding
 def df_get_x(r):
+    "datablock df helper for VAE Block using `LatentTuple`"
     return image_path/r['path']
 
 def df_get_y(r):
-    # we want to return a tuple so that we predict latent variables...
+    "datablock df helper for VAE Block using `LatentTuple`"
     return (df_get_x(r),None,None)
 
 # Cell
 
 
 def LatentsTensorBlock():
+    "Class wrapper for the AE `LatentTensor` Block"
     return TransformBlock(type_tfms=LatentsTensor.create, batch_tfms=noop)
 
 
-def df_ae_x(r):
-    return image_path/r['path']
+def df_ae_x(r,im_path=L_ROOT/"data"):
+    "Autoencoder LatentsTensorBlock datablock df helper"
+    return im_path/r['path']
 
 
 # need to make sure that we get the image whihc is "Identical" to the input.. how to test?
-# lambda o: o
+
 def df_ae_y(r):
-    # we want to return a tuple so that we predict latent variables...
-    return df_get_x(r)
+    "The target is the same as the input for AE"# lambda o: o
+    return df_ae_x(r)
 
 
 
@@ -168,6 +173,7 @@ def df_ae_y(r):
 #     return TransformBlock(type_tfms=VAETargetTuple.create, batch_tfms=IntToFloatTensor)
 
 def LatentTupleBlock():
+    "Class wrapper for the AE `LatentTuple` Block (depricated)"
     return TransformBlock(type_tfms=LatentTuple.create, batch_tfms=noop)
 
 
@@ -176,7 +182,7 @@ def LatentTupleBlock():
 #
 
 def get_ae_DataBlock(aug=True,im_path=L_ROOT/"data",stats = 'sneaker',im_size=IMG_SIZE):
-    "wrapper to get the standard ae datablock"
+    "wrapper to get the standard AE datablock with `ImageBlock`,`LatentTensor` target"
     # use partials or a class wrapper to get around this yucky hack
     global image_path
     image_path = im_path
@@ -480,7 +486,7 @@ class L1LatentReg(MyMetric):
 
 # Cell
 
-def _KLD(mu,logvar):
+def KLD(mu,logvar):
     "KLD helper which sum across latents, but not batches"
     return -0.5 * torch.sum(1 + logvar - mu*mu - logvar.exp(),1)
 
@@ -720,7 +726,7 @@ class AnnealedLossCallback(Callback):
     "injects `kl_weight` for access during loss function calculation"
     def after_pred(self):
         kl_weight = self.learn.pred[0].new(1)
-        kl_weight[0] = self.opt.hypers[0]['kl_weight']
+        kl_weight[0] = self.opt.hypers[0]['kl_weight'] if 'kl_weight' in self.opt.hypers[0].keys() else 1.0
         self.learn.pred = self.learn.pred + (kl_weight,)
     def after_batch(self):
         pred, latents, _ = self.learn.pred
@@ -1016,12 +1022,8 @@ def short_VAE_metrics(alpha,batchmean,useL1):
 
 # Cell
 
-# the MMDVAE is built on the basic AE archiecure
-class MMDVAE(AE): pass
-
-
-
 def gaussian_kernel(a, b):
+    "helper for computing MMD"
     dim1_1, dim1_2 = a.shape[0], b.shape[0]
     depth = a.shape[1]
     a = a.view(dim1_1, 1, depth)
@@ -1031,12 +1033,18 @@ def gaussian_kernel(a, b):
     numerator = (a_core - b_core).pow(2).mean(2)/depth
     return torch.exp(-numerator)
 
-def _MMD(a, b):
+def MMD(a, b):
+    "Max Mean Discrepancy"
     return gaussian_kernel(a, a).mean() + gaussian_kernel(b, b).mean() - 2*gaussian_kernel(a, b).mean()
 
-def _MMDsum(a, b):
-    return gaussian_kernel(a, a).sum() + gaussian_kernel(b, b).sum() - 2*gaussian_kernel(a, b).sum()
+def rawMMD(a, b):
+    "_raw_ values from gauss kernals, assuming that and b have the same shape"
+    return gaussian_kernel(a, a) + gaussian_kernel(b, b) - 2*gaussian_kernel(a, b)
 
+
+
+# the MMDVAE is built on the basic AE archiecure
+class MMDVAE(AE): pass
 
 
 class MaxMeanDiscrepancy(Module):
@@ -1066,16 +1074,14 @@ class MaxMeanDiscrepancy(Module):
         #numerator = (a_core - b_core).pow(2).mean(2)   /depth
         return torch.exp(-numerator)
 
-
-
-    def _raw_MMD(self, a, b):
+    def _rawMMD(self, a, b):
         return self._gaus_ker(a, a) +  self._gaus_ker(b, b) - 2*self._gaus_ker(a, b)
 
     def _MMDmean(self, a, b):
-        return self._raw_MMD( a, b).mean()
+        return self._rawMMD( a, b).mean()
 
     def _MMDsum(self, a, b):
-        return self._raw_MMD( a, b).sum()
+        return self._rawMMD( a, b).sum()
 
 
     def forward(self,true_samples, latent):
@@ -1145,7 +1151,9 @@ class MMDLoss(Module):
 class MMDMetric(MyMetric):
     def __init__(self,batchmean=False,alpha=1.0):
         vals = []
-        mmd = _MMDsum if batchmean else _MMD
+        #mmd = _MMDsum if batchmean else _MMD
+        mmd = MaxMeanDiscrepancy(batchmean=batchmean)
+
         store_attr('vals,batchmean,alpha,mmd')
 
     def accumulate(self, learn):

@@ -84,7 +84,13 @@ preamble: This is a project initiated while an Insight Data Science fellow.  It 
 - GAN finetuning?
 - crappify general pattern
 - throw out based on inspection of high loss
-- try mixed labels?  things that are &gt;50% sneakers included???</code></pre>
+- try mixed labels?  things that are &gt;50% sneakers included???
+
+
+</code></pre>
+<h3 id="TODO:-fix-loss-/-metrics-reduction-logic">TODO: fix loss / metrics reduction logic<a class="anchor-link" href="#TODO:-fix-loss-/-metrics-reduction-logic"> </a></h3><p>batchmean should <em>only</em> apply to KLD because the mean over latents in not meaningful.
+'none', 'mean', 'sum' for reduction over "batches"</p>
+<p>all the other <em>scaling</em> should come through alpha....</p>
 
 </div>
 </div>
@@ -123,7 +129,7 @@ preamble: This is a project initiated while an Insight Data Science fellow.  It 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="prep_df_for_datablocks" class="doc_header"><code>prep_df_for_datablocks</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L26" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>prep_df_for_datablocks</code>(<strong><code>df</code></strong>)</p>
+<h4 id="prep_df_for_datablocks" class="doc_header"><code>prep_df_for_datablocks</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L27" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>prep_df_for_datablocks</code>(<strong><code>df</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -171,7 +177,7 @@ preamble: This is a project initiated while an Insight Data Science fellow.  It 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_ae_btfms" class="doc_header"><code>get_ae_btfms</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L38" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_ae_btfms</code>(<strong><code>stats</code></strong>=<em><code>'sneaker'</code></em>)</p>
+<h4 id="get_ae_btfms" class="doc_header"><code>get_ae_btfms</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L41" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_ae_btfms</code>(<strong><code>stats</code></strong>=<em><code>'sneaker'</code></em>)</p>
 </blockquote>
 
 </div>
@@ -195,7 +201,7 @@ preamble: This is a project initiated while an Insight Data Science fellow.  It 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_ae_no_aug" class="doc_header"><code>get_ae_no_aug</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L62" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_ae_no_aug</code>(<strong><code>stats</code></strong>=<em><code>'sneaker'</code></em>)</p>
+<h4 id="get_ae_no_aug" class="doc_header"><code>get_ae_no_aug</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L65" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_ae_no_aug</code>(<strong><code>stats</code></strong>=<em><code>'sneaker'</code></em>)</p>
 </blockquote>
 
 </div>
@@ -258,7 +264,7 @@ preamble: This is a project initiated while an Insight Data Science fellow.  It 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="Tensor2Vect" class="doc_header"><code>class</code> <code>Tensor2Vect</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L86" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>Tensor2Vect</code>(<strong><code>x</code></strong>, <strong>**<code>kwargs</code></strong>) :: <a href="/snkrfinder/model.cvae#TensorPoint"><code>TensorPoint</code></a></p>
+<h2 id="Tensor2Vect" class="doc_header"><code>class</code> <code>Tensor2Vect</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L89" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>Tensor2Vect</code>(<strong><code>x</code></strong>, <strong>**<code>kwargs</code></strong>) :: <a href="/snkrfinder/model.cvae#TensorPoint"><code>TensorPoint</code></a></p>
 </blockquote>
 <p>Basic type for points in an image</p>
 
@@ -283,7 +289,7 @@ preamble: This is a project initiated while an Insight Data Science fellow.  It 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="LatentsTensor" class="doc_header"><code>class</code> <code>LatentsTensor</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L90" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>LatentsTensor</code>(<strong><code>x</code></strong>, <strong>**<code>kwargs</code></strong>) :: <a href="/snkrfinder/model.cvae#Tensor2Vect"><code>Tensor2Vect</code></a></p>
+<h2 id="LatentsTensor" class="doc_header"><code>class</code> <code>LatentsTensor</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L93" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>LatentsTensor</code>(<strong><code>x</code></strong>, <strong>**<code>kwargs</code></strong>) :: <a href="/snkrfinder/model.cvae#Tensor2Vect"><code>Tensor2Vect</code></a></p>
 </blockquote>
 <p>Basic type for latents as Tensor inheriting from TensorPoint (vectors)</p>
 
@@ -315,8 +321,9 @@ preamble: This is a project initiated while an Insight Data Science fellow.  It 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="df_get_x" class="doc_header"><code>df_get_x</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L139" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>df_get_x</code>(<strong><code>r</code></strong>)</p>
+<h4 id="df_get_x" class="doc_header"><code>df_get_x</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L141" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>df_get_x</code>(<strong><code>r</code></strong>)</p>
 </blockquote>
+<p>datablock df helper for VAE Block using <code>LatentTuple</code></p>
 
 </div>
 
@@ -339,39 +346,9 @@ preamble: This is a project initiated while an Insight Data Science fellow.  It 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="df_get_y" class="doc_header"><code>df_get_y</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L142" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>df_get_y</code>(<strong><code>r</code></strong>)</p>
+<h4 id="df_get_y" class="doc_header"><code>df_get_y</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L145" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>df_get_y</code>(<strong><code>r</code></strong>)</p>
 </blockquote>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="LatentsTensorBlock" class="doc_header"><code>LatentsTensorBlock</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L149" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>LatentsTensorBlock</code>()</p>
-</blockquote>
+<p>datablock df helper for VAE Block using <code>LatentTuple</code></p>
 
 </div>
 
@@ -392,13 +369,19 @@ preamble: This is a project initiated while an Insight Data Science fellow.  It 
 
 <div class="output_area">
 
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-1-695190600e6d&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">      6</span> 
+<span class="ansi-green-intense-fg ansi-bold">      7</span> 
+<span class="ansi-green-fg">----&gt; 8</span><span class="ansi-red-fg"> </span><span class="ansi-green-fg">def</span> df_ae_x<span class="ansi-blue-fg">(</span>r<span class="ansi-blue-fg">,</span>im_path<span class="ansi-blue-fg">=</span>L_ROOT<span class="ansi-blue-fg">/</span><span class="ansi-blue-fg">&#34;data&#34;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">      9</span>     <span class="ansi-green-fg">return</span> im_path<span class="ansi-blue-fg">/</span>r<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;path&#39;</span><span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">     10</span> 
 
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="df_ae_x" class="doc_header"><code>df_ae_x</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L153" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>df_ae_x</code>(<strong><code>r</code></strong>)</p>
-</blockquote>
-
+<span class="ansi-red-fg">NameError</span>: name &#39;L_ROOT&#39; is not defined</pre>
 </div>
-
 </div>
 
 </div>
@@ -418,8 +401,9 @@ preamble: This is a project initiated while an Insight Data Science fellow.  It 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="df_ae_y" class="doc_header"><code>df_ae_y</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L159" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>df_ae_y</code>(<strong><code>r</code></strong>)</p>
+<h4 id="LatentsTensorBlock" class="doc_header"><code>LatentsTensorBlock</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L152" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>LatentsTensorBlock</code>()</p>
 </blockquote>
+<p>Class wrapper for the AE <code>LatentTensor</code> Block</p>
 
 </div>
 
@@ -442,8 +426,59 @@ preamble: This is a project initiated while an Insight Data Science fellow.  It 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="LatentTupleBlock" class="doc_header"><code>LatentTupleBlock</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L170" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>LatentTupleBlock</code>()</p>
+<h4 id="df_ae_x" class="doc_header"><code>df_ae_x</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L157" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>df_ae_x</code>(<strong><code>r</code></strong>, <strong><code>im_path</code></strong>=<em><code>Path('/home/ergonyc/Projects/Project2.0/snkrfinder/data')</code></em>)</p>
 </blockquote>
+<p>Autoencoder LatentsTensorBlock datablock df helper</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="df_ae_y" class="doc_header"><code>df_ae_y</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L164" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>df_ae_y</code>(<strong><code>r</code></strong>)</p>
+</blockquote>
+<p>The target is the same as the input for AE</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="LatentTupleBlock" class="doc_header"><code>LatentTupleBlock</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L175" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>LatentTupleBlock</code>()</p>
+</blockquote>
+<p>Class wrapper for the AE <code>LatentTuple</code> Block (depricated)</p>
 
 </div>
 
@@ -480,9 +515,9 @@ preamble: This is a project initiated while an Insight Data Science fellow.  It 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_ae_DataBlock" class="doc_header"><code>get_ae_DataBlock</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L178" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_ae_DataBlock</code>(<strong><code>aug</code></strong>=<em><code>True</code></em>, <strong><code>im_path</code></strong>=<em><code>Path('/home/ergonyc/Projects/Project2.0/snkrfinder/data')</code></em>, <strong><code>stats</code></strong>=<em><code>'sneaker'</code></em>, <strong><code>im_size</code></strong>=<em><code>160</code></em>)</p>
+<h4 id="get_ae_DataBlock" class="doc_header"><code>get_ae_DataBlock</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L184" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_ae_DataBlock</code>(<strong><code>aug</code></strong>=<em><code>True</code></em>, <strong><code>im_path</code></strong>=<em><code>Path('/home/ergonyc/Projects/Project2.0/snkrfinder/data')</code></em>, <strong><code>stats</code></strong>=<em><code>'sneaker'</code></em>, <strong><code>im_size</code></strong>=<em><code>160</code></em>)</p>
 </blockquote>
-<p>wrapper to get the standard ae datablock</p>
+<p>wrapper to get the standard AE datablock with <code>ImageBlock</code>,<code>LatentTensor</code> target</p>
 
 </div>
 
@@ -531,7 +566,7 @@ Its sort of <em>hack</em>-ey but keeping the tooling equivalent to the betaVAE w
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="UpsampleBlock" class="doc_header"><code>class</code> <code>UpsampleBlock</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L198" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>UpsampleBlock</code>(<strong><code>up_in_c</code></strong>:<code>int</code>, <strong><code>final_div</code></strong>:<code>bool</code>=<em><code>True</code></em>, <strong><code>blur</code></strong>:<code>bool</code>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>) :: <code>Module</code></p>
+<h2 id="UpsampleBlock" class="doc_header"><code>class</code> <code>UpsampleBlock</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L204" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>UpsampleBlock</code>(<strong><code>up_in_c</code></strong>:<code>int</code>, <strong><code>final_div</code></strong>:<code>bool</code>=<em><code>True</code></em>, <strong><code>blur</code></strong>:<code>bool</code>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>) :: <code>Module</code></p>
 </blockquote>
 <p>Same as <code>nn.Module</code>, but no need for subclasses to call <code>super().__init__</code></p>
 
@@ -563,7 +598,7 @@ Its sort of <em>hack</em>-ey but keeping the tooling equivalent to the betaVAE w
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="LatentLayer" class="doc_header"><code>class</code> <code>LatentLayer</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L219" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>LatentLayer</code>(<strong><code>in_features</code></strong>, <strong><code>latent_features</code></strong>) :: <code>Module</code></p>
+<h2 id="LatentLayer" class="doc_header"><code>class</code> <code>LatentLayer</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L225" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>LatentLayer</code>(<strong><code>in_features</code></strong>, <strong><code>latent_features</code></strong>) :: <code>Module</code></p>
 </blockquote>
 <p>This layer encodes the latent "bottleneck" and is constructed to work with the specified VAE DataBlock be a replacement for
 the variational (reparameter trick) layer for otherwise identical architecture</p>
@@ -596,7 +631,7 @@ the variational (reparameter trick) layer for otherwise identical architecture</
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AEEncoder" class="doc_header"><code>class</code> <code>AEEncoder</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L246" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AEEncoder</code>(<strong><code>arch_body</code></strong>, <strong><code>enc_dim</code></strong>, <strong><code>hidden_dim</code></strong>=<em><code>None</code></em>, <strong><code>im_size</code></strong>=<em><code>160</code></em>) :: <code>Module</code></p>
+<h2 id="AEEncoder" class="doc_header"><code>class</code> <code>AEEncoder</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L252" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AEEncoder</code>(<strong><code>arch_body</code></strong>, <strong><code>enc_dim</code></strong>, <strong><code>hidden_dim</code></strong>=<em><code>None</code></em>, <strong><code>im_size</code></strong>=<em><code>160</code></em>) :: <code>Module</code></p>
 </blockquote>
 <p>Same as <code>nn.Module</code>, but no need for subclasses to call <code>super().__init__</code></p>
 
@@ -621,7 +656,7 @@ the variational (reparameter trick) layer for otherwise identical architecture</
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AEDecoder" class="doc_header"><code>class</code> <code>AEDecoder</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L269" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AEDecoder</code>(<strong><code>hidden_dim</code></strong>=<em><code>None</code></em>, <strong><code>latent_dim</code></strong>=<em><code>128</code></em>, <strong><code>im_size</code></strong>=<em><code>160</code></em>, <strong><code>out_range</code></strong>=<em><code>[-1, 1]</code></em>) :: <code>Module</code></p>
+<h2 id="AEDecoder" class="doc_header"><code>class</code> <code>AEDecoder</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L275" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AEDecoder</code>(<strong><code>hidden_dim</code></strong>=<em><code>None</code></em>, <strong><code>latent_dim</code></strong>=<em><code>128</code></em>, <strong><code>im_size</code></strong>=<em><code>160</code></em>, <strong><code>out_range</code></strong>=<em><code>[-1, 1]</code></em>) :: <code>Module</code></p>
 </blockquote>
 <p>Same as <code>nn.Module</code>, but no need for subclasses to call <code>super().__init__</code></p>
 
@@ -661,7 +696,7 @@ We could enumerate the class layers and return sequential, but simply making som
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="build_AE_encoder" class="doc_header"><code>build_AE_encoder</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L310" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>build_AE_encoder</code>(<strong><code>arch_body</code></strong>, <strong><code>enc_dim</code></strong>, <strong><code>hidden_dim</code></strong>=<em><code>None</code></em>, <strong><code>im_size</code></strong>=<em><code>160</code></em>)</p>
+<h4 id="build_AE_encoder" class="doc_header"><code>build_AE_encoder</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L316" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>build_AE_encoder</code>(<strong><code>arch_body</code></strong>, <strong><code>enc_dim</code></strong>, <strong><code>hidden_dim</code></strong>=<em><code>None</code></em>, <strong><code>im_size</code></strong>=<em><code>160</code></em>)</p>
 </blockquote>
 <p>wrapper to sequential-ize AEEncoder class</p>
 
@@ -686,7 +721,7 @@ We could enumerate the class layers and return sequential, but simply making som
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="build_AE_decoder" class="doc_header"><code>build_AE_decoder</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L317" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>build_AE_decoder</code>(<strong><code>hidden_dim</code></strong>=<em><code>None</code></em>, <strong><code>latent_dim</code></strong>=<em><code>128</code></em>, <strong><code>im_size</code></strong>=<em><code>160</code></em>, <strong><code>out_range</code></strong>=<em><code>[-1, 1]</code></em>)</p>
+<h4 id="build_AE_decoder" class="doc_header"><code>build_AE_decoder</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L323" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>build_AE_decoder</code>(<strong><code>hidden_dim</code></strong>=<em><code>None</code></em>, <strong><code>latent_dim</code></strong>=<em><code>128</code></em>, <strong><code>im_size</code></strong>=<em><code>160</code></em>, <strong><code>out_range</code></strong>=<em><code>[-1, 1]</code></em>)</p>
 </blockquote>
 <p>wrapper to sequential-ize AEDecoder class</p>
 
@@ -718,7 +753,7 @@ We could enumerate the class layers and return sequential, but simply making som
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AE" class="doc_header"><code>class</code> <code>AE</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L327" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AE</code>(<strong><code>enc_parts</code></strong>, <strong><code>hidden_dim</code></strong>=<em><code>None</code></em>, <strong><code>latent_dim</code></strong>=<em><code>128</code></em>, <strong><code>im_size</code></strong>=<em><code>160</code></em>, <strong><code>out_range</code></strong>=<em><code>[-1, 1]</code></em>) :: <code>Module</code></p>
+<h2 id="AE" class="doc_header"><code>class</code> <code>AE</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L333" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AE</code>(<strong><code>enc_parts</code></strong>, <strong><code>hidden_dim</code></strong>=<em><code>None</code></em>, <strong><code>latent_dim</code></strong>=<em><code>128</code></em>, <strong><code>im_size</code></strong>=<em><code>160</code></em>, <strong><code>out_range</code></strong>=<em><code>[-1, 1]</code></em>) :: <code>Module</code></p>
 </blockquote>
 <p>Same as <code>nn.Module</code>, but no need for subclasses to call <code>super().__init__</code></p>
 
@@ -758,7 +793,7 @@ We could enumerate the class layers and return sequential, but simply making som
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AELoss" class="doc_header"><code>class</code> <code>AELoss</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L404" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AELoss</code>(<strong><code>batchmean</code></strong>=<em><code>False</code></em>, <strong><code>alpha</code></strong>=<em><code>1.0</code></em>, <strong><code>useL1</code></strong>=<em><code>False</code></em>) :: <code>Module</code></p>
+<h2 id="AELoss" class="doc_header"><code>class</code> <code>AELoss</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L410" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AELoss</code>(<strong><code>batchmean</code></strong>=<em><code>False</code></em>, <strong><code>alpha</code></strong>=<em><code>1.0</code></em>, <strong><code>useL1</code></strong>=<em><code>False</code></em>) :: <code>Module</code></p>
 </blockquote>
 <p>wrapper for loss_func which deals with potential annealed kl_weight
 does MSE with 'mean' reduction
@@ -800,7 +835,7 @@ simple L1 regularizer on latent dimension</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="MyMetric" class="doc_header"><code>class</code> <code>MyMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L452" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MyMetric</code>() :: <code>Metric</code></p>
+<h2 id="MyMetric" class="doc_header"><code>class</code> <code>MyMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L458" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MyMetric</code>() :: <code>Metric</code></p>
 </blockquote>
 <p>meta-class for simple average over epoch metric quantities</p>
 
@@ -825,7 +860,7 @@ simple L1 regularizer on latent dimension</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="L1LatentReg" class="doc_header"><code>class</code> <code>L1LatentReg</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L461" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>L1LatentReg</code>(<strong><code>batchmean</code></strong>=<em><code>False</code></em>, <strong><code>alpha</code></strong>=<em><code>1.0</code></em>) :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
+<h2 id="L1LatentReg" class="doc_header"><code>class</code> <code>L1LatentReg</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L467" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>L1LatentReg</code>(<strong><code>batchmean</code></strong>=<em><code>False</code></em>, <strong><code>alpha</code></strong>=<em><code>1.0</code></em>) :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
 </blockquote>
 <p>Latent Regularizer with sum reduction and optinal batchmean scaling</p>
 
@@ -864,7 +899,32 @@ simple L1 regularizer on latent dimension</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="KLDiv" class="doc_header"><code>class</code> <code>KLDiv</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L488" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>KLDiv</code>(<strong><code>batchmean</code></strong>=<em><code>False</code></em>) :: <code>Module</code></p>
+<h4 id="KLD" class="doc_header"><code>KLD</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L489" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>KLD</code>(<strong><code>mu</code></strong>, <strong><code>logvar</code></strong>)</p>
+</blockquote>
+<p>KLD helper which sum across latents, but not batches</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="KLDiv" class="doc_header"><code>class</code> <code>KLDiv</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L494" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>KLDiv</code>(<strong><code>batchmean</code></strong>=<em><code>False</code></em>) :: <code>Module</code></p>
 </blockquote>
 <p>Module for computing the KL Divergence from a unit normal distribution.
 'batchmean' option sums first and averages over batches</p>
@@ -897,7 +957,7 @@ simple L1 regularizer on latent dimension</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="L2MeanMetric" class="doc_header"><code>class</code> <code>L2MeanMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L520" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>L2MeanMetric</code>() :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
+<h2 id="L2MeanMetric" class="doc_header"><code>class</code> <code>L2MeanMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L526" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>L2MeanMetric</code>() :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
 </blockquote>
 <p>Mean square error</p>
 
@@ -922,7 +982,7 @@ simple L1 regularizer on latent dimension</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="L1MeanMetric" class="doc_header"><code>class</code> <code>L1MeanMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L530" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>L1MeanMetric</code>() :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
+<h2 id="L1MeanMetric" class="doc_header"><code>class</code> <code>L1MeanMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L536" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>L1MeanMetric</code>() :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
 </blockquote>
 <p>Mean absolute error</p>
 
@@ -947,7 +1007,7 @@ simple L1 regularizer on latent dimension</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="L2Metric" class="doc_header"><code>class</code> <code>L2Metric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L540" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>L2Metric</code>() :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
+<h2 id="L2Metric" class="doc_header"><code>class</code> <code>L2Metric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L546" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>L2Metric</code>() :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
 </blockquote>
 <p>Sum square error</p>
 
@@ -972,7 +1032,7 @@ simple L1 regularizer on latent dimension</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="L1Metric" class="doc_header"><code>class</code> <code>L1Metric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L550" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>L1Metric</code>() :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
+<h2 id="L1Metric" class="doc_header"><code>class</code> <code>L1Metric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L556" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>L1Metric</code>() :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
 </blockquote>
 <p>Sum absolute error</p>
 
@@ -997,7 +1057,7 @@ simple L1 regularizer on latent dimension</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="L2BMeanMetric" class="doc_header"><code>class</code> <code>L2BMeanMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L561" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>L2BMeanMetric</code>() :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
+<h2 id="L2BMeanMetric" class="doc_header"><code>class</code> <code>L2BMeanMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L567" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>L2BMeanMetric</code>() :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
 </blockquote>
 <p>Summed square error average across batch</p>
 
@@ -1022,7 +1082,7 @@ simple L1 regularizer on latent dimension</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="L1BMeanMetric" class="doc_header"><code>class</code> <code>L1BMeanMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L571" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>L1BMeanMetric</code>() :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
+<h2 id="L1BMeanMetric" class="doc_header"><code>class</code> <code>L1BMeanMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L577" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>L1BMeanMetric</code>() :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
 </blockquote>
 <p>Summed abs error average across batch</p>
 
@@ -1047,7 +1107,7 @@ simple L1 regularizer on latent dimension</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="KLWeightMetric" class="doc_header"><code>class</code> <code>KLWeightMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L582" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>KLWeightMetric</code>() :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
+<h2 id="KLWeightMetric" class="doc_header"><code>class</code> <code>KLWeightMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L588" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>KLWeightMetric</code>() :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
 </blockquote>
 <p>Injected KLD weighting</p>
 
@@ -1072,7 +1132,7 @@ simple L1 regularizer on latent dimension</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="RawKLDMetric" class="doc_header"><code>class</code> <code>RawKLDMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L591" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>RawKLDMetric</code>(<strong><code>batchmean</code></strong>=<em><code>False</code></em>) :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
+<h2 id="RawKLDMetric" class="doc_header"><code>class</code> <code>RawKLDMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L597" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>RawKLDMetric</code>(<strong><code>batchmean</code></strong>=<em><code>False</code></em>) :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
 </blockquote>
 <p>KLD Metric, <code>batchmean</code> averages across batches</p>
 
@@ -1097,7 +1157,7 @@ simple L1 regularizer on latent dimension</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="WeightedKLDMetric" class="doc_header"><code>class</code> <code>WeightedKLDMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L604" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>WeightedKLDMetric</code>(<strong><code>batchmean</code></strong>=<em><code>False</code></em>, <strong><code>alpha</code></strong>=<em><code>1.0</code></em>) :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
+<h2 id="WeightedKLDMetric" class="doc_header"><code>class</code> <code>WeightedKLDMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L610" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>WeightedKLDMetric</code>(<strong><code>batchmean</code></strong>=<em><code>False</code></em>, <strong><code>alpha</code></strong>=<em><code>1.0</code></em>) :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
 </blockquote>
 <p>weighted KLD Metric, <code>batchmean</code> averages across batches
 the "effective" KLD regularization in e.g. a 𝜷-BAE</p>
@@ -1123,7 +1183,7 @@ the "effective" KLD regularization in e.g. a 𝜷-BAE</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="MuMetric" class="doc_header"><code>class</code> <code>MuMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L624" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MuMetric</code>() :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
+<h2 id="MuMetric" class="doc_header"><code>class</code> <code>MuMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L630" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MuMetric</code>() :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
 </blockquote>
 <p>average latent value (e.g. avg(<code>mu</code>)</p>
 
@@ -1148,7 +1208,7 @@ the "effective" KLD regularization in e.g. a 𝜷-BAE</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="MuSDMetric" class="doc_header"><code>class</code> <code>MuSDMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L633" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MuSDMetric</code>() :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
+<h2 id="MuSDMetric" class="doc_header"><code>class</code> <code>MuSDMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L639" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MuSDMetric</code>() :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
 </blockquote>
 <p>standard deviation of latent 𝝁 value (e.g. std(<code>mu</code>) )</p>
 
@@ -1173,7 +1233,7 @@ the "effective" KLD regularization in e.g. a 𝜷-BAE</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="StdMetric" class="doc_header"><code>class</code> <code>StdMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L642" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>StdMetric</code>() :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
+<h2 id="StdMetric" class="doc_header"><code>class</code> <code>StdMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L648" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>StdMetric</code>() :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
 </blockquote>
 <p>average of latent 𝝈 value (e.g. std(exp(.5*<code>logvar</code>) )</p>
 
@@ -1198,7 +1258,7 @@ the "effective" KLD regularization in e.g. a 𝜷-BAE</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="StdSDMetric" class="doc_header"><code>class</code> <code>StdSDMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L651" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>StdSDMetric</code>() :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
+<h2 id="StdSDMetric" class="doc_header"><code>class</code> <code>StdSDMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L657" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>StdSDMetric</code>() :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
 </blockquote>
 <p>standard deviation of latent 𝝈 value (e.g. std(exp(.5*<code>logvar</code>) )</p>
 
@@ -1223,7 +1283,7 @@ the "effective" KLD regularization in e.g. a 𝜷-BAE</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="LogvarMetric" class="doc_header"><code>class</code> <code>LogvarMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L660" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>LogvarMetric</code>() :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
+<h2 id="LogvarMetric" class="doc_header"><code>class</code> <code>LogvarMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L666" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>LogvarMetric</code>() :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
 </blockquote>
 <p>average of latent log(𝝈*𝝈) value (e.g. mean(<code>logvar</code>))</p>
 
@@ -1248,7 +1308,7 @@ the "effective" KLD regularization in e.g. a 𝜷-BAE</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="LogvarSDMetric" class="doc_header"><code>class</code> <code>LogvarSDMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L668" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>LogvarSDMetric</code>() :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
+<h2 id="LogvarSDMetric" class="doc_header"><code>class</code> <code>LogvarSDMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L674" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>LogvarSDMetric</code>() :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
 </blockquote>
 <p>standard deviation of latent log(𝝈*𝝈)  value (e.g. std(<code>logvar</code>)</p>
 
@@ -1286,7 +1346,7 @@ the "effective" KLD regularization in e.g. a 𝜷-BAE</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="default_AE_metrics" class="doc_header"><code>default_AE_metrics</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L682" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>default_AE_metrics</code>(<strong><code>alpha</code></strong>, <strong><code>batchmean</code></strong>, <strong><code>useL1</code></strong>)</p>
+<h4 id="default_AE_metrics" class="doc_header"><code>default_AE_metrics</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L688" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>default_AE_metrics</code>(<strong><code>alpha</code></strong>, <strong><code>batchmean</code></strong>, <strong><code>useL1</code></strong>)</p>
 </blockquote>
 <p>long-ish default list of metrics for the AE</p>
 
@@ -1311,7 +1371,7 @@ the "effective" KLD regularization in e.g. a 𝜷-BAE</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="short_AE_metrics" class="doc_header"><code>short_AE_metrics</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L702" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>short_AE_metrics</code>(<strong><code>alpha</code></strong>, <strong><code>batchmean</code></strong>, <strong><code>useL1</code></strong>)</p>
+<h4 id="short_AE_metrics" class="doc_header"><code>short_AE_metrics</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L708" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>short_AE_metrics</code>(<strong><code>alpha</code></strong>, <strong><code>batchmean</code></strong>, <strong><code>useL1</code></strong>)</p>
 </blockquote>
 <p>short default list of metrics for the AE</p>
 
@@ -1365,7 +1425,7 @@ The <code>Recorder</code> resets (maps <code>reset()</code> to all mets) the met
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AnnealedLossCallback" class="doc_header"><code>class</code> <code>AnnealedLossCallback</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L719" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AnnealedLossCallback</code>(<strong><code>after_create</code></strong>=<em><code>None</code></em>, <strong><code>before_fit</code></strong>=<em><code>None</code></em>, <strong><code>before_epoch</code></strong>=<em><code>None</code></em>, <strong><code>before_train</code></strong>=<em><code>None</code></em>, <strong><code>before_batch</code></strong>=<em><code>None</code></em>, <strong><code>after_pred</code></strong>=<em><code>None</code></em>, <strong><code>after_loss</code></strong>=<em><code>None</code></em>, <strong><code>before_backward</code></strong>=<em><code>None</code></em>, <strong><code>before_step</code></strong>=<em><code>None</code></em>, <strong><code>after_cancel_step</code></strong>=<em><code>None</code></em>, <strong><code>after_step</code></strong>=<em><code>None</code></em>, <strong><code>after_cancel_batch</code></strong>=<em><code>None</code></em>, <strong><code>after_batch</code></strong>=<em><code>None</code></em>, <strong><code>after_cancel_train</code></strong>=<em><code>None</code></em>, <strong><code>after_train</code></strong>=<em><code>None</code></em>, <strong><code>before_validate</code></strong>=<em><code>None</code></em>, <strong><code>after_cancel_validate</code></strong>=<em><code>None</code></em>, <strong><code>after_validate</code></strong>=<em><code>None</code></em>, <strong><code>after_cancel_epoch</code></strong>=<em><code>None</code></em>, <strong><code>after_epoch</code></strong>=<em><code>None</code></em>, <strong><code>after_cancel_fit</code></strong>=<em><code>None</code></em>, <strong><code>after_fit</code></strong>=<em><code>None</code></em>) :: <code>Callback</code></p>
+<h2 id="AnnealedLossCallback" class="doc_header"><code>class</code> <code>AnnealedLossCallback</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L725" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AnnealedLossCallback</code>(<strong><code>after_create</code></strong>=<em><code>None</code></em>, <strong><code>before_fit</code></strong>=<em><code>None</code></em>, <strong><code>before_epoch</code></strong>=<em><code>None</code></em>, <strong><code>before_train</code></strong>=<em><code>None</code></em>, <strong><code>before_batch</code></strong>=<em><code>None</code></em>, <strong><code>after_pred</code></strong>=<em><code>None</code></em>, <strong><code>after_loss</code></strong>=<em><code>None</code></em>, <strong><code>before_backward</code></strong>=<em><code>None</code></em>, <strong><code>before_step</code></strong>=<em><code>None</code></em>, <strong><code>after_cancel_step</code></strong>=<em><code>None</code></em>, <strong><code>after_step</code></strong>=<em><code>None</code></em>, <strong><code>after_cancel_batch</code></strong>=<em><code>None</code></em>, <strong><code>after_batch</code></strong>=<em><code>None</code></em>, <strong><code>after_cancel_train</code></strong>=<em><code>None</code></em>, <strong><code>after_train</code></strong>=<em><code>None</code></em>, <strong><code>before_validate</code></strong>=<em><code>None</code></em>, <strong><code>after_cancel_validate</code></strong>=<em><code>None</code></em>, <strong><code>after_validate</code></strong>=<em><code>None</code></em>, <strong><code>after_cancel_epoch</code></strong>=<em><code>None</code></em>, <strong><code>after_epoch</code></strong>=<em><code>None</code></em>, <strong><code>after_cancel_fit</code></strong>=<em><code>None</code></em>, <strong><code>after_fit</code></strong>=<em><code>None</code></em>) :: <code>Callback</code></p>
 </blockquote>
 <p>injects <code>kl_weight</code> for access during loss function calculation</p>
 
@@ -1390,7 +1450,7 @@ The <code>Recorder</code> resets (maps <code>reset()</code> to all mets) the met
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="default_KL_anneal_in" class="doc_header"><code>default_KL_anneal_in</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L730" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>default_KL_anneal_in</code>()</p>
+<h4 id="default_KL_anneal_in" class="doc_header"><code>default_KL_anneal_in</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L736" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>default_KL_anneal_in</code>()</p>
 </blockquote>
 <p>reasonable default for 'warming up' the KL Div</p>
 
@@ -1432,7 +1492,7 @@ The <code>Recorder</code> resets (maps <code>reset()</code> to all mets) the met
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&lt;matplotlib.lines.Line2D at 0x7f4e01251a00&gt;]</pre>
+<pre>[&lt;matplotlib.lines.Line2D at 0x7f71b7ec3880&gt;]</pre>
 </div>
 
 </div>
@@ -1502,7 +1562,7 @@ The <code>Recorder</code> resets (maps <code>reset()</code> to all mets) the met
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="bn_splitter" class="doc_header"><code>bn_splitter</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L736" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>bn_splitter</code>(<strong><code>m</code></strong>)</p>
+<h4 id="bn_splitter" class="doc_header"><code>bn_splitter</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L742" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>bn_splitter</code>(<strong><code>m</code></strong>)</p>
 </blockquote>
 <p>splits all the batchnorm layers out</p>
 
@@ -1527,7 +1587,7 @@ The <code>Recorder</code> resets (maps <code>reset()</code> to all mets) the met
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="resnetVAE_split" class="doc_header"><code>resnetVAE_split</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L749" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>resnetVAE_split</code>(<strong><code>m</code></strong>)</p>
+<h4 id="resnetVAE_split" class="doc_header"><code>resnetVAE_split</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L755" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>resnetVAE_split</code>(<strong><code>m</code></strong>)</p>
 </blockquote>
 <p>simple splitter to freeze the non batch norm pre-trained encoder</p>
 
@@ -1552,7 +1612,7 @@ The <code>Recorder</code> resets (maps <code>reset()</code> to all mets) the met
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="AE_split" class="doc_header"><code>AE_split</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L758" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>AE_split</code>(<strong><code>m</code></strong>)</p>
+<h4 id="AE_split" class="doc_header"><code>AE_split</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L764" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>AE_split</code>(<strong><code>m</code></strong>)</p>
 </blockquote>
 <p>generic splitter for my AE classes- BVAE &amp; AE &amp; MMDVAE.</p>
 
@@ -1654,7 +1714,7 @@ The <code>Recorder</code> resets (maps <code>reset()</code> to all mets) the met
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_conv_parts" class="doc_header"><code>get_conv_parts</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L770" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_conv_parts</code>(<strong><code>im_size</code></strong>=<em><code>160</code></em>)</p>
+<h4 id="get_conv_parts" class="doc_header"><code>get_conv_parts</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L776" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_conv_parts</code>(<strong><code>im_size</code></strong>=<em><code>160</code></em>)</p>
 </blockquote>
 <p>make a simple convolutional ladder encoder</p>
 
@@ -1679,7 +1739,7 @@ The <code>Recorder</code> resets (maps <code>reset()</code> to all mets) the met
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_pretrained_parts" class="doc_header"><code>get_pretrained_parts</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L786" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_pretrained_parts</code>(<strong><code>arch</code></strong>=<em><code>'resnet18'</code></em>)</p>
+<h4 id="get_pretrained_parts" class="doc_header"><code>get_pretrained_parts</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L792" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_pretrained_parts</code>(<strong><code>arch</code></strong>=<em><code>'resnet18'</code></em>)</p>
 </blockquote>
 <p>this works for mobilnet_v2, resnet, and xresnet</p>
 
@@ -1704,7 +1764,7 @@ The <code>Recorder</code> resets (maps <code>reset()</code> to all mets) the met
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_encoder_parts" class="doc_header"><code>get_encoder_parts</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L797" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_encoder_parts</code>(<strong><code>enc_type</code></strong>=<em><code>'vanilla'</code></em>, <strong><code>im_size</code></strong>=<em><code>160</code></em>)</p>
+<h4 id="get_encoder_parts" class="doc_header"><code>get_encoder_parts</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L803" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_encoder_parts</code>(<strong><code>enc_type</code></strong>=<em><code>'vanilla'</code></em>, <strong><code>im_size</code></strong>=<em><code>160</code></em>)</p>
 </blockquote>
 
 </div>
@@ -1839,7 +1899,7 @@ The <code>Recorder</code> resets (maps <code>reset()</code> to all mets) the met
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="VAELinear" class="doc_header"><code>class</code> <code>VAELinear</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L805" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>VAELinear</code>(<strong><code>in_features</code></strong>, <strong><code>latent_features</code></strong>) :: <code>Module</code></p>
+<h2 id="VAELinear" class="doc_header"><code>class</code> <code>VAELinear</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L811" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>VAELinear</code>(<strong><code>in_features</code></strong>, <strong><code>latent_features</code></strong>) :: <code>Module</code></p>
 </blockquote>
 <p>maps hidden (input) features to two latents (mu and logvar)</p>
 
@@ -1864,7 +1924,7 @@ The <code>Recorder</code> resets (maps <code>reset()</code> to all mets) the met
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="VAELayer" class="doc_header"><code>class</code> <code>VAELayer</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L817" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>VAELayer</code>(<strong><code>in_features</code></strong>, <strong><code>latent_features</code></strong>) :: <code>Module</code></p>
+<h2 id="VAELayer" class="doc_header"><code>class</code> <code>VAELayer</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L823" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>VAELayer</code>(<strong><code>in_features</code></strong>, <strong><code>latent_features</code></strong>) :: <code>Module</code></p>
 </blockquote>
 <p>The VAE : in_features to latent_features through
     the "Variational" magic: "reparamaterization trick"</p>
@@ -1913,7 +1973,7 @@ The <code>Recorder</code> resets (maps <code>reset()</code> to all mets) the met
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="BVAE" class="doc_header"><code>class</code> <code>BVAE</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L848" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BVAE</code>(<strong><code>enc_parts</code></strong>, <strong><code>hidden_dim</code></strong>=<em><code>None</code></em>, <strong><code>latent_dim</code></strong>=<em><code>128</code></em>, <strong><code>im_size</code></strong>=<em><code>160</code></em>, <strong><code>out_range</code></strong>=<em><code>[-1, 1]</code></em>) :: <a href="/snkrfinder/model.cvae#AE"><code>AE</code></a></p>
+<h2 id="BVAE" class="doc_header"><code>class</code> <code>BVAE</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L854" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BVAE</code>(<strong><code>enc_parts</code></strong>, <strong><code>hidden_dim</code></strong>=<em><code>None</code></em>, <strong><code>latent_dim</code></strong>=<em><code>128</code></em>, <strong><code>im_size</code></strong>=<em><code>160</code></em>, <strong><code>out_range</code></strong>=<em><code>[-1, 1]</code></em>) :: <a href="/snkrfinder/model.cvae#AE"><code>AE</code></a></p>
 </blockquote>
 <p>simple VAE made with an encoder passed in, and some builder function for the Latent (VAE reparam trick) and decoder</p>
 
@@ -1970,7 +2030,7 @@ The <code>Recorder</code> resets (maps <code>reset()</code> to all mets) the met
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="BVAELoss" class="doc_header"><code>class</code> <code>BVAELoss</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L930" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BVAELoss</code>(<strong><code>batchmean</code></strong>=<em><code>False</code></em>, <strong><code>alpha</code></strong>=<em><code>1.0</code></em>, <strong><code>useL1</code></strong>=<em><code>False</code></em>) :: <code>Module</code></p>
+<h2 id="BVAELoss" class="doc_header"><code>class</code> <code>BVAELoss</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L936" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BVAELoss</code>(<strong><code>batchmean</code></strong>=<em><code>False</code></em>, <strong><code>alpha</code></strong>=<em><code>1.0</code></em>, <strong><code>useL1</code></strong>=<em><code>False</code></em>) :: <code>Module</code></p>
 </blockquote>
 <p>Measures how well we have created the original image,
 plus the KL Divergence with the unit normal distribution
@@ -2004,7 +2064,7 @@ batchmean option sums first and averages over batches (for smaller total error m
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="default_VAE_metrics" class="doc_header"><code>default_VAE_metrics</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L975" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>default_VAE_metrics</code>(<strong><code>alpha</code></strong>, <strong><code>batchmean</code></strong>, <strong><code>useL1</code></strong>)</p>
+<h4 id="default_VAE_metrics" class="doc_header"><code>default_VAE_metrics</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L981" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>default_VAE_metrics</code>(<strong><code>alpha</code></strong>, <strong><code>batchmean</code></strong>, <strong><code>useL1</code></strong>)</p>
 </blockquote>
 <p>long default list of metrics for the VAE</p>
 
@@ -2029,7 +2089,7 @@ batchmean option sums first and averages over batches (for smaller total error m
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="short_VAE_metrics" class="doc_header"><code>short_VAE_metrics</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L998" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>short_VAE_metrics</code>(<strong><code>alpha</code></strong>, <strong><code>batchmean</code></strong>, <strong><code>useL1</code></strong>)</p>
+<h4 id="short_VAE_metrics" class="doc_header"><code>short_VAE_metrics</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L1004" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>short_VAE_metrics</code>(<strong><code>alpha</code></strong>, <strong><code>batchmean</code></strong>, <strong><code>useL1</code></strong>)</p>
 </blockquote>
 <p>short default list of metrics for the AE</p>
 
@@ -2888,6 +2948,29 @@ For more detailed explanations, I used these resources to learn, in order of use
     
 <div class="cell border-box-sizing code_cell rendered">
 
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-6-f899f89f02ff&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">     23</span> 
+<span class="ansi-green-intense-fg ansi-bold">     24</span> <span class="ansi-red-fg"># the MMDVAE is built on the basic AE archiecure</span>
+<span class="ansi-green-fg">---&gt; 25</span><span class="ansi-red-fg"> </span><span class="ansi-green-fg">class</span> MMDVAE<span class="ansi-blue-fg">(</span>AE<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span> <span class="ansi-green-fg">pass</span>
+<span class="ansi-green-intense-fg ansi-bold">     26</span> 
+<span class="ansi-green-intense-fg ansi-bold">     27</span> 
+
+<span class="ansi-red-fg">NameError</span>: name &#39;AE&#39; is not defined</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
     {% endraw %}
 
@@ -2902,7 +2985,82 @@ For more detailed explanations, I used these resources to learn, in order of use
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="MMDVAE" class="doc_header"><code>class</code> <code>MMDVAE</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L1020" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MMDVAE</code>(<strong><code>enc_parts</code></strong>, <strong><code>hidden_dim</code></strong>=<em><code>None</code></em>, <strong><code>latent_dim</code></strong>=<em><code>128</code></em>, <strong><code>im_size</code></strong>=<em><code>160</code></em>, <strong><code>out_range</code></strong>=<em><code>[-1, 1]</code></em>) :: <a href="/snkrfinder/model.cvae#AE"><code>AE</code></a></p>
+<h4 id="gaussian_kernel" class="doc_header"><code>gaussian_kernel</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L1025" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>gaussian_kernel</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>)</p>
+</blockquote>
+<p>helper for computing MMD</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="MMD" class="doc_header"><code>MMD</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L1036" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>MMD</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>)</p>
+</blockquote>
+<p>Max Mean Discrepancy</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="rawMMD" class="doc_header"><code>rawMMD</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L1040" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>rawMMD</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>)</p>
+</blockquote>
+<p><em>raw</em> values from gauss kernals, assuming that and b have the same shape</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="MMDVAE" class="doc_header"><code>class</code> <code>MMDVAE</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L1047" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MMDVAE</code>(<strong><code>enc_parts</code></strong>, <strong><code>hidden_dim</code></strong>=<em><code>None</code></em>, <strong><code>latent_dim</code></strong>=<em><code>128</code></em>, <strong><code>im_size</code></strong>=<em><code>160</code></em>, <strong><code>out_range</code></strong>=<em><code>[-1, 1]</code></em>) :: <a href="/snkrfinder/model.cvae#AE"><code>AE</code></a></p>
 </blockquote>
 <p>Same as <code>nn.Module</code>, but no need for subclasses to call <code>super().__init__</code></p>
 
@@ -2927,31 +3085,7 @@ For more detailed explanations, I used these resources to learn, in order of use
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="gaussian_kernel" class="doc_header"><code>gaussian_kernel</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L1024" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>gaussian_kernel</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>)</p>
-</blockquote>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h2 id="MaxMeanDiscrepancy" class="doc_header"><code>class</code> <code>MaxMeanDiscrepancy</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L1042" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MaxMeanDiscrepancy</code>(<strong><code>batchmean</code></strong>=<em><code>False</code></em>) :: <code>Module</code></p>
+<h2 id="MaxMeanDiscrepancy" class="doc_header"><code>class</code> <code>MaxMeanDiscrepancy</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L1050" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MaxMeanDiscrepancy</code>(<strong><code>batchmean</code></strong>=<em><code>False</code></em>) :: <code>Module</code></p>
 </blockquote>
 <p>MMD
 add alpha?</p>
@@ -2977,7 +3111,7 @@ add alpha?</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="MMDLoss" class="doc_header"><code>class</code> <code>MMDLoss</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L1089" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MMDLoss</code>(<strong><code>batchmean</code></strong>=<em><code>False</code></em>, <strong><code>alpha</code></strong>=<em><code>1.0</code></em>, <strong><code>useL1</code></strong>=<em><code>False</code></em>) :: <code>Module</code></p>
+<h2 id="MMDLoss" class="doc_header"><code>class</code> <code>MMDLoss</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L1095" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MMDLoss</code>(<strong><code>batchmean</code></strong>=<em><code>False</code></em>, <strong><code>alpha</code></strong>=<em><code>1.0</code></em>, <strong><code>useL1</code></strong>=<em><code>False</code></em>) :: <code>Module</code></p>
 </blockquote>
 <p>Measures mean square error of prediction and original image,
 regularized by MMD.</p>
@@ -3004,7 +3138,7 @@ regularized by MMD.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="MMDMetric" class="doc_header"><code>class</code> <code>MMDMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L1145" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MMDMetric</code>(<strong><code>batchmean</code></strong>=<em><code>False</code></em>, <strong><code>alpha</code></strong>=<em><code>1.0</code></em>) :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
+<h2 id="MMDMetric" class="doc_header"><code>class</code> <code>MMDMetric</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L1151" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MMDMetric</code>(<strong><code>batchmean</code></strong>=<em><code>False</code></em>, <strong><code>alpha</code></strong>=<em><code>1.0</code></em>) :: <a href="/snkrfinder/model.cvae#MyMetric"><code>MyMetric</code></a></p>
 </blockquote>
 <p>meta-class for simple average over epoch metric quantities</p>
 
@@ -3029,7 +3163,7 @@ regularized by MMD.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="short_MMEVAE_metrics" class="doc_header"><code>short_MMEVAE_metrics</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L1165" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>short_MMEVAE_metrics</code>(<strong><code>alpha</code></strong>, <strong><code>batchmean</code></strong>, <strong><code>useL1</code></strong>)</p>
+<h4 id="short_MMEVAE_metrics" class="doc_header"><code>short_MMEVAE_metrics</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L1173" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>short_MMEVAE_metrics</code>(<strong><code>alpha</code></strong>, <strong><code>batchmean</code></strong>, <strong><code>useL1</code></strong>)</p>
 </blockquote>
 <p>short list of metrics for the VAE</p>
 
@@ -3054,7 +3188,7 @@ regularized by MMD.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="default_MMEVAE_metrics" class="doc_header"><code>default_MMEVAE_metrics</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L1180" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>default_MMEVAE_metrics</code>(<strong><code>alpha</code></strong>, <strong><code>batchmean</code></strong>, <strong><code>useL1</code></strong>)</p>
+<h4 id="default_MMEVAE_metrics" class="doc_header"><code>default_MMEVAE_metrics</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L1188" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>default_MMEVAE_metrics</code>(<strong><code>alpha</code></strong>, <strong><code>batchmean</code></strong>, <strong><code>useL1</code></strong>)</p>
 </blockquote>
 <p>long default list of metrics for the VAE</p>
 
@@ -3291,7 +3425,7 @@ regularized by MMD.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="UpsampleResBlock" class="doc_header"><code>class</code> <code>UpsampleResBlock</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L1204" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>UpsampleResBlock</code>(<strong><code>up_in_c</code></strong>:<code>int</code>, <strong><code>final_div</code></strong>:<code>bool</code>=<em><code>True</code></em>, <strong><code>blur</code></strong>:<code>bool</code>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>) :: <code>Module</code></p>
+<h2 id="UpsampleResBlock" class="doc_header"><code>class</code> <code>UpsampleResBlock</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L1212" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>UpsampleResBlock</code>(<strong><code>up_in_c</code></strong>:<code>int</code>, <strong><code>final_div</code></strong>:<code>bool</code>=<em><code>True</code></em>, <strong><code>blur</code></strong>:<code>bool</code>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>) :: <code>Module</code></p>
 </blockquote>
 <p>Same as <code>nn.Module</code>, but no need for subclasses to call <code>super().__init__</code></p>
 
@@ -3316,7 +3450,7 @@ regularized by MMD.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_resblockencoder_parts" class="doc_header"><code>get_resblockencoder_parts</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L1222" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_resblockencoder_parts</code>(<strong><code>enc_type</code></strong>=<em><code>'vanilla'</code></em>, <strong><code>im_size</code></strong>=<em><code>160</code></em>)</p>
+<h4 id="get_resblockencoder_parts" class="doc_header"><code>get_resblockencoder_parts</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L1230" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_resblockencoder_parts</code>(<strong><code>enc_type</code></strong>=<em><code>'vanilla'</code></em>, <strong><code>im_size</code></strong>=<em><code>160</code></em>)</p>
 </blockquote>
 <p>make a simple (hence 'vanilla') convolutional ladder encoder with ResBlock parts</p>
 
@@ -3341,7 +3475,7 @@ regularized by MMD.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ResBlockAEDecoder" class="doc_header"><code>class</code> <code>ResBlockAEDecoder</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L1267" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ResBlockAEDecoder</code>(<strong><code>hidden_dim</code></strong>=<em><code>None</code></em>, <strong><code>latent_dim</code></strong>=<em><code>128</code></em>, <strong><code>im_size</code></strong>=<em><code>160</code></em>, <strong><code>out_range</code></strong>=<em><code>[-1, 1]</code></em>) :: <code>Module</code></p>
+<h2 id="ResBlockAEDecoder" class="doc_header"><code>class</code> <code>ResBlockAEDecoder</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L1275" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ResBlockAEDecoder</code>(<strong><code>hidden_dim</code></strong>=<em><code>None</code></em>, <strong><code>latent_dim</code></strong>=<em><code>128</code></em>, <strong><code>im_size</code></strong>=<em><code>160</code></em>, <strong><code>out_range</code></strong>=<em><code>[-1, 1]</code></em>) :: <code>Module</code></p>
 </blockquote>
 <p>Same as <code>nn.Module</code>, but no need for subclasses to call <code>super().__init__</code></p>
 
@@ -3366,7 +3500,7 @@ regularized by MMD.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="build_ResBlockAE_decoder" class="doc_header"><code>build_ResBlockAE_decoder</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L1304" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>build_ResBlockAE_decoder</code>(<strong><code>hidden_dim</code></strong>=<em><code>None</code></em>, <strong><code>latent_dim</code></strong>=<em><code>128</code></em>, <strong><code>im_size</code></strong>=<em><code>160</code></em>, <strong><code>out_range</code></strong>=<em><code>[-1, 1]</code></em>)</p>
+<h4 id="build_ResBlockAE_decoder" class="doc_header"><code>build_ResBlockAE_decoder</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L1312" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>build_ResBlockAE_decoder</code>(<strong><code>hidden_dim</code></strong>=<em><code>None</code></em>, <strong><code>latent_dim</code></strong>=<em><code>128</code></em>, <strong><code>im_size</code></strong>=<em><code>160</code></em>, <strong><code>out_range</code></strong>=<em><code>[-1, 1]</code></em>)</p>
 </blockquote>
 <p>wrapper to sequential-ize ResBlockAEDecoder class</p>
 
@@ -3391,7 +3525,7 @@ regularized by MMD.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ResBlockAE" class="doc_header"><code>class</code> <code>ResBlockAE</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L1311" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ResBlockAE</code>(<strong><code>enc_parts</code></strong>, <strong><code>hidden_dim</code></strong>=<em><code>None</code></em>, <strong><code>latent_dim</code></strong>=<em><code>128</code></em>, <strong><code>im_size</code></strong>=<em><code>160</code></em>, <strong><code>out_range</code></strong>=<em><code>[-1, 1]</code></em>, <strong><code>isVAE</code></strong>=<em><code>False</code></em>) :: <a href="/snkrfinder/model.cvae#AE"><code>AE</code></a></p>
+<h2 id="ResBlockAE" class="doc_header"><code>class</code> <code>ResBlockAE</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/model/cvae.py#L1319" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ResBlockAE</code>(<strong><code>enc_parts</code></strong>, <strong><code>hidden_dim</code></strong>=<em><code>None</code></em>, <strong><code>latent_dim</code></strong>=<em><code>128</code></em>, <strong><code>im_size</code></strong>=<em><code>160</code></em>, <strong><code>out_range</code></strong>=<em><code>[-1, 1]</code></em>, <strong><code>isVAE</code></strong>=<em><code>False</code></em>) :: <a href="/snkrfinder/model.cvae#AE"><code>AE</code></a></p>
 </blockquote>
 <p>Same as <code>nn.Module</code>, but no need for subclasses to call <code>super().__init__</code></p>
 

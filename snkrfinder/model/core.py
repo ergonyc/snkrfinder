@@ -76,6 +76,7 @@ def get_mnetV2_feature_net(to_cuda=False):
 
 def get_rnet_feature_net(to_cuda=False):
     # there's also a create_body create_head fastai builtin helper
+    "depricated featurenet with xresnet. replaced with `create_cnn_featurenet`"
     arch,cut = xresnet18(pretrained=True),-4
     model = nn.Sequential(*list(arch.children())[:cut],
                                AdaptiveConcatPool2d(),
@@ -140,7 +141,11 @@ def zap_get_y(r): return r['Category']  # we aren't actually using the category 
 def zap_get_fname(r): return r['path']
 
 def get_zap_feats_dataloaders(data,batch_size, size, device):
-    "get the zappos data ready for feature extraction"
+    """
+    get the zappos data ready for feature extraction
+    sets filename as "category" for easy retrieval of data...
+        also setting `shuffle` to False
+    """
     dblock = DataBlock(blocks=(ImageBlock, CategoryBlock),
                    splitter=IndexSplitter([]),
                    get_x=zap_get_x,
@@ -161,6 +166,9 @@ def get_all_feats(dls,model,to_df=False):
     paths = []
     batchn = 0
 
+    #force shuffling t0 be off...
+    dls.train.shuffle=False
+
     with torch.no_grad():
         for imgs,classes in dls.train:
             outs.extend(to_detach(conv_net(imgs)))
@@ -176,15 +184,17 @@ def get_all_feats(dls,model,to_df=False):
     return feats,cs,fns
 
 # Cell
-def get_feats_df(dls,conv_net):
+def get_feats_df(dls,feats_net):
+    "calculate the features. `classes` are the filenames "
     outs = []
     clss = []
     paths = []
     batchn = 0
-
+    #force shuffling t0 be off...
+    dls.train.shuffle=False
     with torch.no_grad():
         for imgs,classes in dls.train:
-            outs.extend(to_detach(conv_net(imgs)))
+            outs.extend(to_detach(feats_net(imgs)))
             clss.extend(to_detach(classes))
             paths.extend( [to_detach(dls[0].vocab[c]) for c in classes])
             batchn += 1
@@ -200,7 +210,9 @@ def get_feats_df(dls,conv_net):
     return df_feats
 
 # Cell
+
 def save_feats(df,model,im_size,batch_size=64,f_sfx=''):
+    "TODO: refactor and/or move to data scripts "
     device = get_cuda()
 #     # might not need to reduce batch_size if my GPU is _clean_
 #     bs = batch_size if im_size<=192 else batch_size//2
@@ -213,6 +225,7 @@ def save_feats(df,model,im_size,batch_size=64,f_sfx=''):
 
 
 def save_featsXsize(df,model,im_sizes = IMG_SIZES,batch_size=64):
+    "TODO: refactor and/or move to data scripts.  wrapper for saving feats for multiple sizes "
     for i,sz in enumerate(im_sizes):
         im_size = im_sizes[sz]
         print(im_size)
@@ -224,6 +237,7 @@ def save_featsXsize(df,model,im_sizes = IMG_SIZES,batch_size=64):
 # Cell
 def collate_featsXsize(df,mname,im_sizes=IMG_SIZES,dump=True):
     """
+    TODO: refactor and/or move to data scripts.
     merge the features from small/med/large\
     im_sizes must be adictionary with a str key and int size
     """
@@ -259,6 +273,7 @@ def collate_featsXsize(df,mname,im_sizes=IMG_SIZES,dump=True):
 # Cell
 def get_convnet_feature(cnet,t_image,to_cuda=False):
     """
+    TODO:  class dispatch and/or handler for filename or PIL image convesion to ImageTensor
     input:
         convnet - our neutered & prepped Convolutional Net e.g. MobileNet_v2
         t_image - ImageTensor. probaby 3x224x224... but could be a batch
@@ -284,7 +299,11 @@ def get_convnet_feature(cnet,t_image,to_cuda=False):
 
 # Cell
 def load_and_prep_sneaker(image_path,size=IMG_SIZE,to_cuda=False):
-    """ a function to _pipeline_ our images into tensors """
+    """
+    a function to _pipeline_ our images into tensors
+
+    equivalent to the encoding in the dataloader paradigm used ot make db
+    """
 
     base_im = PILImage.create(image_path)
     #BUG: pass split_idx=1 to avoid funny business
@@ -312,6 +331,7 @@ load_and_prep_tf_pipe = Pipeline([PILImage.create,
 
 # Cell
 def get_umap_reducer(latents):
+    "wrapper to create a UMAP reducer from the np.stack of features frim the database"
     reducer = umap.UMAP(random_state=666)
     reducer.fit(latents)
 
@@ -321,6 +341,7 @@ def get_umap_reducer(latents):
 
 def get_neighs_and_reducers(df,num_neighs=5):
     # pack a dictionary of knns and reducers
+    "wrapper to KNN map, and UMAP reducer from the features frim the database"
 
     knns = {}
     reducers = {}
