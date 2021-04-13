@@ -3,9 +3,9 @@
 __all__ = ['get_home', 'HOME', 'dump_pickle', 'load_pickle', 'add_time_stamp', 'L_ROOT', 'D_ROOT', 'DBS_REL', 'DBS',
            'ZAPPOS_META_DIR', 'SCRAPED_META_DIR', 'IMG_SIZE_LG', 'IMG_SIZE_MD', 'IMG_SIZE_SM', 'IMG_SIZE', 'IMG_SIZES',
            'IMSZ2LAB', 'SIZE_ABBR', 'ZAPPOS_DF_SIMPLIFIED', 'ZAPPOS_FEATS_ALL', 'ZAPPOS_FEATS_ALL_SORT',
-           'ZAPPOS_FEATS_SM', 'ZAPPOS_FEATS_MD', 'ZAPPOS_FEATS_LG', 'SCRAPED_DF', 'COMBINED_DF', 'QUERY_IM',
-           'QUERY_IM2', 'BETA', 'LATENT_DIM', 'mobilenet_v2_meta', 'IM_STATS', 'DEFAULT_STATS', 'IMAGENET_OUT_RANGE',
-           'MY_OUT_RANGE', 'OUT_RANGE']
+           'ZAPPOS_FEATS_SM', 'ZAPPOS_FEATS_MD', 'ZAPPOS_FEATS_LG', 'SCRAPED_DF', 'COMBINED_SNEAKERS_DF', 'COMBINED_DF',
+           'QUERY_IM', 'QUERY_IM2', 'BETA', 'LATENT_DIM', 'mobilenet_v2_meta', 'IM_STATS', 'DEFAULT_STATS',
+           'IMAGENET_OUT_RANGE', 'MY_OUT_RANGE', 'OUT_RANGE']
 
 # Cell
 from .imports import *
@@ -14,6 +14,7 @@ from .imports import *
 def get_home():
     return Path().home()
 
+# set a default
 HOME = get_home()
 
 # Cell
@@ -35,7 +36,7 @@ def add_time_stamp(filepath=""):
     "add PST timestamp to path"
     os.environ["TZ"] = "US/Pacific"
     time.tzset()
-    return filepath + time.strftime("%m%d-%H%M")
+    return filepath + time.strftime("%m.%d-%H.%M")
 
 
 # Cell
@@ -84,7 +85,9 @@ ZAPPOS_FEATS_MD = f"mobilenetv2-features_medium"
 ZAPPOS_FEATS_LG = f"mobilenetv2-features_large"
 
 SCRAPED_DF = "full_data"
+COMBINED_SNEAKERS_DF = "full_sneakers_db"
 COMBINED_DF = "full_db"
+
 
 QUERY_IM = "Shoes/Sneakers and Athletic Shoes/Nike/7716996.288224.jpg"
 QUERY_IM2 = 'figs/491212_01.jpg.jpeg'

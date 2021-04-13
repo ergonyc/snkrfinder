@@ -18,9 +18,6 @@ import umap #!conda install -c conda-forge umap-learn
 import seaborn as sns
 
 from sklearn.decomposition import PCA
-from sklearn.metrics import confusion_matrix, plot_confusion_matrix
-from seaborn import heatmap
-from sklearn.linear_model import LogisticRegression
 
 
 

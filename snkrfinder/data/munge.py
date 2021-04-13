@@ -45,18 +45,21 @@ def read_zappos_meta(path_meta):
 
     # ad sub-categories (one-hot)
     categories=pd.read_csv(path_meta/'meta-data-bin.csv')
-    df = pd.merge(df, categories,  how='left', on='CID')# left_on=['CID'], right_on = ['CID'])
+    df = pd.merge(df, categories,  how='left', on='CID')
 
 
     # fix the path by remove trailing periods in folder names
-    df.loc[df.path.str.contains("./",regex=False),"path"] = [i.replace("./","/") for i in df.loc[df.path.str.contains("./",regex=False),"path"]]
-    df.loc[df.path.str.contains("Levi\'s ",regex=False),"path"] = [i.replace("Levi\'s ","Levis ") for i in df.loc[df.path.str.contains("Levi\'s ",regex=False),"path"]]
+    df.loc[df.path.str.contains("./",regex=False),"path"] = [i.replace("./","/")
+                                                             for i in
+                                                               df.loc[df.path.str.contains("./",regex=False),"path"]]
+    df.loc[df.path.str.contains("Levi\'s ",regex=False),"path"] = [i.replace("Levi\'s ","Levis ")
+                                                                   for i in
+                                                                     df.loc[df.path.str.contains("Levi\'s ",regex=False),"path"]]
     # create brands and category stubs...
     df['path_and_file'] = df.path.apply(lambda path: (os.path.normpath(path)).split(os.sep) )
     df_to_add = pd.DataFrame(df['path_and_file'].tolist(), columns=['Category1','Category2','Brand','Filename'])
 
     df = df.merge(df_to_add, left_index=True, right_index=True)
-    #df = pd.merge(df, df_to_add, left_index=True, right_index=True)
     return df
 
 
@@ -81,20 +84,15 @@ def simplify_zappos_db(df):
                          & (df.Category2 != 'Firstwalker')
                          & (df.Category2 != 'Prewalker') )
 
-    # refine shoes
+    # refine slippers
     df.loc[:,'Slippers'] = (  (df.Category1 == 'Slippers')
                          & (df.Category2 != 'Boot') )
 
-
-    ############
     #remove ([ 'Boys',  'Boys;Girls', 'Girls','Women;Girls', nan
-
     mens =  df['Gender'] == 'Men'
     womens =  df['Gender'] == 'Women'
     etc =  df['Gender'].str.contains('Men;', na=False)
-
     df.loc[:,'Adult'] = mens | womens | etc
-
     df.loc[:,'Mens'] = mens
     df.loc[:,'Womens'] = womens
 
@@ -105,7 +103,6 @@ def simplify_zappos_db(df):
     df.loc[(df.Boots==1),'Category'] = 'Boots'
     df.loc[(df.Sneakers==1),'Category'] = 'Sneakers'
     df.loc[(df.Slippers==1),'Category'] = 'Slippers'
-
 
     # make some expository columns
     keep_columns = ['CID','Category',
@@ -119,7 +116,6 @@ def simplify_zappos_db(df):
     df = df.filter(items=keep_columns)
     #keep Adult, Sneakers, Boots, Shoes, Slippers
     keep_rows = (df.Sneakers | df.Boots | df.Shoes| df.Slippers) & (df.Adult)
-    #Only keep Adult (men+women) and Sneakers, Boots, Shoes
     df = df[keep_rows.values]
     return df
 
@@ -127,7 +123,6 @@ def simplify_zappos_db(df):
 
 def skl_tt_split(df,strat_cat):
     "adds stratified train-validate-test via sklearn"
-
 
     X = df.index
     y = strat_cat
@@ -142,7 +137,7 @@ def skl_tt_split(df,strat_cat):
     # the _junk suffix means that we drop that variable completely
     x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=1 - train_ratio,stratify=y, random_state=666)
 
-    # test is now 10% of the initial data set
+    # test is now 15% of the initial data set
     # validation is now 15% of the initial data set
     x_val, x_test, y_val, y_test = train_test_split(x_test, y_test, test_size=test_ratio/(test_ratio + validation_ratio),stratify=y_test, random_state=666)
     # pack into the dataframe

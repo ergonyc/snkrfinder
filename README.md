@@ -21,11 +21,11 @@ This is a project initiated while an Insight Data Science fellow.  It grew out o
 installs the snkrfinder module...
 - snkrfinder.core -> snkrfinder (utils)
 
-- snkrfinder.data -> snkrfinder.data
+- snkrfinder.data -> snkrfinder.data.munge
 
 - snkrfinder.model -> snkrfinder.model (.core .cvae .transfer)
 
-- snkrfinder.widget -> snkrfinder.widget
+- snkrfinder.widget -> snkrfinder.widget.feats
 
 
 
@@ -39,6 +39,13 @@ Fill me in please! Don't forget code examples:
 ```python
 1+1
 ```
+
+
+
+
+    2
+
+
 
 dump_pickle[source]
 dump_pickle(filepath, item_to_save)

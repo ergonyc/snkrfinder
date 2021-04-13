@@ -16,9 +16,6 @@ entries:
       title: snkrfinder.data.munge
       url: /data.munge
     - output: web,pdf
-      title: snkrfinder.data.core
-      url: /data.load
-    - output: web,pdf
       title: first snkrfinder.model.core
       url: /model.core
     - output: web,pdf

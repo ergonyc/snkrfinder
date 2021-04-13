@@ -8,7 +8,6 @@ __all__ = ['plot_umap', 'on_click_find_similar', 'find_similar', 'update_knn_red
 from ..imports import *
 from ..core import *
 from ..data.munge import *
-from ..data.load import *
 from ..model.core import *
 from ..model.transfer import *
 from ..model.cvae import *
