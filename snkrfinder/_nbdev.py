@@ -3,11 +3,11 @@
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
 index = {"get_home": "00_core.ipynb",
+         "get_root": "00_core.ipynb",
          "HOME": "00_core.ipynb",
          "dump_pickle": "00_core.ipynb",
          "load_pickle": "00_core.ipynb",
          "add_time_stamp": "00_core.ipynb",
-         "foo": "00_core.ipynb",
          "L_ROOT": "00_core.ipynb",
          "D_ROOT": "00_core.ipynb",
          "DBS_REL": "00_core.ipynb",
