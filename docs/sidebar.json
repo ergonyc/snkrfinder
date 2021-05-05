@@ -1,7 +1,7 @@
 {
   "snkrfinder": {
     "Overview": "/",
-    "snkrfinder.core": "/core",
-    "snkrfinder.data": "/data"
+    "snkrfinder.core": "core.html",
+    "snkrfinder.data": "data.html"
   }
 }
