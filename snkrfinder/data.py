@@ -14,6 +14,7 @@ from sklearn.model_selection import train_test_split
 import os
 import shutil
 
+
 # Cell
 def get_zappos_db():
     "import the UT zappos 50k database from vision.cs.utexas.edu"
@@ -60,6 +61,7 @@ def read_zappos_meta(path_meta):
 
     df = df.merge(df_to_add, left_index=True, right_index=True)
     return df
+
 
 # Cell
 
@@ -150,6 +152,8 @@ def skl_tt_split(df,strat_cat):
     df.loc[x_val,'t_t_v'] = 'valid'
     return df
 
+
+
 # Cell
 def extract_cat(lst):
     for l in lst:
@@ -168,6 +172,7 @@ def extract_brand_sns(lst):
 
 def extract_db_nm(pathn):
     return pathn.split('/')[0]
+
 
 # Cell
 def get_scraped_db():
@@ -191,13 +196,15 @@ def get_scraped_db():
     def _extract_db_nm(pathn):
         return pathn.split('/')[0]
 
-    df_scraped = pd.read_pickle(f"{SCRAPED_META_DIR/SCRAPED_DF}.pkl")
+    filename = f"data/{SCRAPED_DF}.pkl"
+    df_scraped = pd.read_pickle(filename)
     df_scraped.loc[:,"path"]=df_scraped.hero_fullpath.str.split('/').apply(lambda x: 'scraped/'+x[-3]+'/'+x[-1])
     df_scraped.loc[:,"brand"]=df_scraped.attributes.apply(_extract_brand_sns)
     df_scraped.loc[:,"cat"]=df_scraped.attributes.apply(_extract_cat)
     df_scraped.loc[:,"db_name"]=df_scraped["path"].apply(_extract_db_nm)
     df_scraped.loc[df_scraped['db_name']=='goat',"brand"]=df_scraped.loc[df_scraped['db_name']=='goat',"attributes"].apply(_extract_brand_goat)
     return df_scraped
+
 
 # Cell
 def merge_dbs(df_zappos,df_scraped):

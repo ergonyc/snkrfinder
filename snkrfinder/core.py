@@ -55,7 +55,9 @@ def add_time_stamp(filepath=""):
 
 #change these to relative....
 
-L_ROOT = get_home()/'Projects/Project2.0/snkrfinder'
+#L_ROOT = get_home()/'Projects/Project2.0/snkrfinder'
+L_ROOT = get_root()
+
 D_ROOT = get_home()/'Projects/DATABASE'
 
 
