@@ -36,7 +36,7 @@ NOTE:  symbolic link in the nbs directory to enable the module loads in these no
 
 Fill me in please! Don't forget code examples:
 
-```python
+```
 1+1
 ```
 
@@ -52,7 +52,7 @@ dump_pickle(filepath, item_to_save)
 
 simple wrapper to load a pickelfile
 
-```python
+```
 HOME
 ```
 

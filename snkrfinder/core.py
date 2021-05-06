@@ -20,8 +20,10 @@ HOME = get_home()
 
 def get_root():
     cwd = Path().cwd()
-    cw
-
+    root = cwd.parts[-1]
+    if root == 'nbs':
+        root = cwd.parts[-2]
+    return root
 
 # Cell
 # Data methods
