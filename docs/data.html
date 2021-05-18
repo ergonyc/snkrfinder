@@ -73,7 +73,7 @@ nb_path: "nbs/01a_data.ipynb"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>Path(&#39;/home/ergonyc/Projects/DATABASE&#39;)</pre>
+<pre>Path(&#39;/home/ergonyc/Projects/Project2.0/snkrfinder/data/raw&#39;)</pre>
 </div>
 
 </div>
@@ -123,17 +123,6 @@ nb_path: "nbs/01a_data.ipynb"
 </div>
     {% endraw %}
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="data-set-cleaning">data set cleaning<a class="anchor-link" href="#data-set-cleaning"> </a></h3><p>The dataset is very diverse and not constructed in order to think about how popular footwear is aesthetically related.  I'm simplifying the database to include 4 categories which seem to split aesthetics for general footwear:</p>
-<p>1) BOOTS - weatherized and/or protected footwear for work or outdoor activity
-2) SANDALS - charachterized by a sole and straps
-3) SHOES - generic non "boot" footwear.  includes heels and formalwear
-4) SNEAKERS - atheletic / comfort inspired</p>
-
-</div>
-</div>
-</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -147,7 +136,15 @@ nb_path: "nbs/01a_data.ipynb"
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="read_zappos_meta" class="doc_header"><code>read_zappos_meta</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/data.py#L33" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>read_zappos_meta</code>(<strong><code>path_meta</code></strong>)</p>
 </blockquote>
-<p>read the metadat from UT zappos 50k db</p>
+<p>read the metadata from UT zappos 50k database.</p>
+<p>The data is split between a  matlabe format, and a csv file.  A helper,
+<code>_path_from_mat</code> reads the Matlab, and the two are combined into a
+Pandas dataframe.   Some light munging to clean up some awkward strings and
+prep the info for easy access follows.</p>
+<p>Args:
+    path_meta (str): path where the meta-data files live</p>
+<p>Returns:
+    df (pd.DataFrame): dataframe having all the sneaker info and and image name</p>
 
 </div>
 
@@ -208,50 +205,220 @@ nb_path: "nbs/01a_data.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="simplify:">simplify:<a class="anchor-link" href="#simplify:"> </a></h3><p>Categories:</p>
+<h3 id="data-set-cleaning">data set cleaning<a class="anchor-link" href="#data-set-cleaning"> </a></h3><p>The dataset is very diverse and not constructed in order to think about how popular footwear is aesthetically related.  I'm simplifying the database to include 3 main categories which seem to split aesthetics for general footwear:</p>
 
-<pre><code>1. SHOES, 
-2. BOOTS, 
-3. "SNEAKERS", and 
-4. "SLIPPERS"</code></pre>
+<pre><code>1. BOOTS - weatherized and/or protected footwear for work or outdoor activity
+2. SHOES - generic non "boot" footwear.  includes heels and formalwear
+3. SNEAKERS - atheletic / comfort inspired 
+
+</code></pre>
+<p>I will also make a fourth category which might be useful:</p>
+
+<pre><code>4. SLIPPERS - charachterized by a sole and straps</code></pre>
 
 </div>
 </div>
 </div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>CID</th>
+      <th>Category</th>
+      <th>SubCategory</th>
+      <th>HeelHeight</th>
+      <th>Insole</th>
+      <th>Closure</th>
+      <th>Gender</th>
+      <th>Material</th>
+      <th>ToeStyle</th>
+      <th>path</th>
+      <th>...</th>
+      <th>ToeStyle.Apron Toe</th>
+      <th>ToeStyle.Wide Toe Box</th>
+      <th>ToeStyle.Snip Toe</th>
+      <th>ToeStyle.Peep Toe</th>
+      <th>ToeStyle.Medallion</th>
+      <th>path_and_file</th>
+      <th>Category1</th>
+      <th>Category2</th>
+      <th>Brand</th>
+      <th>Filename</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>100627-72</td>
+      <td>Shoes</td>
+      <td>Oxfords</td>
+      <td>NaN</td>
+      <td>Leather</td>
+      <td>Lace up</td>
+      <td>Men</td>
+      <td>Leather</td>
+      <td>Capped Toe;Round Toe</td>
+      <td>ut-zap50k-images/Shoes/Oxfords/Bostonian/100627.72.jpg</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>[Shoes, Oxfords, Bostonian, 100627.72.jpg]</td>
+      <td>Shoes</td>
+      <td>Oxfords</td>
+      <td>Bostonian</td>
+      <td>100627.72.jpg</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>100627-255</td>
+      <td>Shoes</td>
+      <td>Oxfords</td>
+      <td>NaN</td>
+      <td>Leather</td>
+      <td>Lace up</td>
+      <td>Men</td>
+      <td>Leather</td>
+      <td>Capped Toe;Round Toe</td>
+      <td>ut-zap50k-images/Shoes/Oxfords/Bostonian/100627.255.jpg</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>[Shoes, Oxfords, Bostonian, 100627.255.jpg]</td>
+      <td>Shoes</td>
+      <td>Oxfords</td>
+      <td>Bostonian</td>
+      <td>100627.255.jpg</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>100657-72</td>
+      <td>Shoes</td>
+      <td>Oxfords</td>
+      <td>NaN</td>
+      <td>Leather;Padded;Removable</td>
+      <td>Lace up</td>
+      <td>Men</td>
+      <td>Leather</td>
+      <td>Capped Toe;Round Toe</td>
+      <td>ut-zap50k-images/Shoes/Oxfords/Bostonian/100657.72.jpg</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>[Shoes, Oxfords, Bostonian, 100657.72.jpg]</td>
+      <td>Shoes</td>
+      <td>Oxfords</td>
+      <td>Bostonian</td>
+      <td>100657.72.jpg</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>100657-216</td>
+      <td>Shoes</td>
+      <td>Oxfords</td>
+      <td>NaN</td>
+      <td>Leather;Padded;Removable</td>
+      <td>Lace up</td>
+      <td>Men</td>
+      <td>Leather</td>
+      <td>Capped Toe;Round Toe</td>
+      <td>ut-zap50k-images/Shoes/Oxfords/Bostonian/100657.216.jpg</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>[Shoes, Oxfords, Bostonian, 100657.216.jpg]</td>
+      <td>Shoes</td>
+      <td>Oxfords</td>
+      <td>Bostonian</td>
+      <td>100657.216.jpg</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>101026-3</td>
+      <td>Boots</td>
+      <td>Mid-Calf</td>
+      <td>1in - 1 3/4in</td>
+      <td>Leather;Padded</td>
+      <td>Pull-on</td>
+      <td>Men</td>
+      <td>Leather;Rubber</td>
+      <td>Square Toe;Closed Toe</td>
+      <td>ut-zap50k-images/Boots/Mid-Calf/Durango/101026.3.jpg</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>[Boots, Mid-Calf, Durango, 101026.3.jpg]</td>
+      <td>Boots</td>
+      <td>Mid-Calf</td>
+      <td>Durango</td>
+      <td>101026.3.jpg</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 166 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>[[ TODO:  change the bullets to a short paragraph describing the simplificaiton ]]</p>
-<p>Only include "adult" shoes</p>
-
-<pre><code>- Adult = mens + womens (kids = not adults),+ etc (unisex)</code></pre>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>To construct these from the Zappos I needed to pull sneakers from shoes and exclude some sub-categories.  e.g. tall boots which would drive the representation of boots.</p>
-
-<pre><code>BOOTS:
-  BOOTS
-    - ankle,  mid-calf
-    - exclude: knee high , over the knee , prewalker
-
-SANDALS:
-  SANDALS
-    - athletic, flat
-    - exclude: heels 
-
-SHOES:
-  SHOES
-    - Boat shoes, clogs and mules,  flats,  loafers, oxfords, prewalker
-    - exclude: heels , crib shoes , firstwalker (exclude)
-
-SNEAKERS
-   SHOES
-   - sneakers and athletic shoes
-
- SLIPPERS (exclude)</code></pre>
+<p>I've taken several steps to try and simplify the "asethetic" space the modeling will need to capture is to exclude some particular sub-categories which represent extremes.  E.g. High cut boots, high-heels, and kids sub-categores. Indeed, I will only include "adult" shoes at this time but excluding "kids" and some edge cases because the overall size scale distorts the overall "aesthetics" I'd like to get at.</p>
 
 </div>
 </div>
@@ -267,9 +434,13 @@ SNEAKERS
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="simplify_zappos_db" class="doc_header"><code>simplify_zappos_db</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/data.py#L68" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>simplify_zappos_db</code>(<strong><code>df</code></strong>)</p>
+<h4 id="simplify_zappos_db" class="doc_header"><code>simplify_zappos_db</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/data.py#L89" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>simplify_zappos_db</code>(<strong><code>df</code></strong>)</p>
 </blockquote>
-<p>simplifies the db (df)</p>
+<p>simlify the dataframe derived from the UT zappos 50k database.</p>
+<p>Args:
+    df (pd.DataFrame): dataframe containing all 50k sneakers / images</p>
+<p>Returns:
+    df (pd.DataFrame): dataframe limited to Sneakers, Boots, Shoes for Adults</p>
 
 </div>
 
@@ -330,7 +501,7 @@ SNEAKERS
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="skl_tt_split" class="doc_header"><code>skl_tt_split</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/data.py#L124" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>skl_tt_split</code>(<strong><code>df</code></strong>, <strong><code>strat_cat</code></strong>)</p>
+<h4 id="skl_tt_split" class="doc_header"><code>skl_tt_split</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/data.py#L155" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>skl_tt_split</code>(<strong><code>df</code></strong>, <strong><code>strat_cat</code></strong>)</p>
 </blockquote>
 <p>adds stratified train-validate-test via sklearn</p>
 
@@ -347,57 +518,6 @@ SNEAKERS
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<hr>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="pickle-/-unpickle-the-database-dataframes">pickle / unpickle the database dataframes<a class="anchor-link" href="#pickle-/-unpickle-the-database-dataframes"> </a></h2>
-</div>
-</div>
-</div>
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># filename = &quot;zappos-50k-simplified&quot;</span>
-<span class="c1"># df.to_pickle(f&quot;data/{filename}.pkl&quot;)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># # df = pd.read_pickle(f&quot;data/{filename}.pkl&quot;)</span>
-<span class="c1"># filename = f&quot;data/{&#39;zappos-50k-simplified_sort&#39;}.pkl&quot; </span>
-
-<span class="c1"># os.path.exists(filename)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 </div>
     {% endraw %}
@@ -462,7 +582,7 @@ SNEAKERS
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>Path(&#39;/home/ergonyc/Projects/DATABASE/SnkrScrpr/data/full_data&#39;)</pre>
+<pre>Path(&#39;/home/ergonyc/Projects/Project2.0/snkrfinder/data/raw/scraped/full_data&#39;)</pre>
 </div>
 
 </div>
@@ -511,6 +631,7 @@ I'll spend some time infering the <code>Category</code>, <code>Brand</code>, <co
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_scraped</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="s2">&quot;path&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">df_scraped</span><span class="o">.</span><span class="n">hero_fullpath</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s1">&#39;scraped/&#39;</span><span class="o">+</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="c1">#df_scraped.loc[:,&quot;path&quot;]=df_scraped.hero_fullpath.str.split(&#39;/&#39;).apply(lambda x: x[-3]+&#39;/&#39;+x[-1])</span>
 <span class="n">df_scraped</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">(),</span><span class="n">df_scraped</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
 </pre></div>
 
@@ -559,7 +680,7 @@ I'll spend some time infering the <code>Category</code>, <code>Brand</code>, <co
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="extract_cat" class="doc_header"><code>extract_cat</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/data.py#L158" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>extract_cat</code>(<strong><code>lst</code></strong>)</p>
+<h4 id="extract_cat" class="doc_header"><code>extract_cat</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/data.py#L188" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>extract_cat</code>(<strong><code>lst</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -583,7 +704,7 @@ I'll spend some time infering the <code>Category</code>, <code>Brand</code>, <co
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="extract_brand_goat" class="doc_header"><code>extract_brand_goat</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/data.py#L164" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>extract_brand_goat</code>(<strong><code>lst</code></strong>)</p>
+<h4 id="extract_brand_goat" class="doc_header"><code>extract_brand_goat</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/data.py#L194" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>extract_brand_goat</code>(<strong><code>lst</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -607,7 +728,7 @@ I'll spend some time infering the <code>Category</code>, <code>Brand</code>, <co
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="extract_brand_sns" class="doc_header"><code>extract_brand_sns</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/data.py#L170" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>extract_brand_sns</code>(<strong><code>lst</code></strong>)</p>
+<h4 id="extract_brand_sns" class="doc_header"><code>extract_brand_sns</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/data.py#L200" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>extract_brand_sns</code>(<strong><code>lst</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -631,7 +752,7 @@ I'll spend some time infering the <code>Category</code>, <code>Brand</code>, <co
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="extract_db_nm" class="doc_header"><code>extract_db_nm</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/data.py#L173" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>extract_db_nm</code>(<strong><code>pathn</code></strong>)</p>
+<h4 id="extract_db_nm" class="doc_header"><code>extract_db_nm</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/data.py#L203" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>extract_db_nm</code>(<strong><code>pathn</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -647,101 +768,13 @@ I'll spend some time infering the <code>Category</code>, <code>Brand</code>, <co
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_scraped</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="s2">&quot;brand&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">df_scraped</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">extract_brand_sns</span><span class="p">)</span>
-<span class="n">df_scraped</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="s2">&quot;cat&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">df_scraped</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">extract_cat</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_scraped</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span>
-<span class="n">df_scraped</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&#39;goat&#39;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_scraped</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="s2">&quot;db_name&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">df_scraped</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">extract_db_nm</span><span class="p">)</span>
-
-<span class="n">df_scraped</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_scraped</span><span class="p">[</span><span class="s1">&#39;db_name&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;goat&#39;</span><span class="p">,</span><span class="s2">&quot;brand&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">df_scraped</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_scraped</span><span class="p">[</span><span class="s1">&#39;db_name&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;goat&#39;</span><span class="p">,</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">extract_brand_goat</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_scraped_og</span> <span class="o">=</span> <span class="n">df_scraped</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 </div>
     {% endraw %}
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Now we just need to wrap the above proceedure into a little function for exporting...</p>
+<p>Now we just need to wrap some cleaning into a function for exporting...</p>
 
 </div>
 </div>
@@ -757,7 +790,7 @@ I'll spend some time infering the <code>Category</code>, <code>Brand</code>, <co
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_scraped_db" class="doc_header"><code>get_scraped_db</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/data.py#L178" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_scraped_db</code>()</p>
+<h4 id="get_scraped_db" class="doc_header"><code>get_scraped_db</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/data.py#L208" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_scraped_db</code>()</p>
 </blockquote>
 <p>collect meta data fromscraped databases</p>
 
@@ -789,7 +822,7 @@ I'll spend some time infering the <code>Category</code>, <code>Brand</code>, <co
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="merge_dbs" class="doc_header"><code>merge_dbs</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/data.py#L210" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>merge_dbs</code>(<strong><code>df_zappos</code></strong>, <strong><code>df_scraped</code></strong>)</p>
+<h4 id="merge_dbs" class="doc_header"><code>merge_dbs</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/data.py#L243" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>merge_dbs</code>(<strong><code>df_zappos</code></strong>, <strong><code>df_scraped</code></strong>)</p>
 </blockquote>
 <p>could be any dfs with 'path','train','test','validate','t_t_v'</p>
 
@@ -834,8 +867,7 @@ I'll spend some time infering the <code>Category</code>, <code>Brand</code>, <co
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># skl_tt_split defined in data.zappos</span>
-<span class="n">df_scraped</span> <span class="o">=</span> <span class="n">skl_tt_split</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">db_name</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_scraped</span> <span class="o">=</span> <span class="n">skl_tt_split</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">db_name</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -900,7 +932,7 @@ Name: Sneakers, Length: 27614, dtype: bool</pre>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="extract_zap_sneakers" class="doc_header"><code>extract_zap_sneakers</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/data.py#L217" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>extract_zap_sneakers</code>(<strong><code>df_zappos</code></strong>)</p>
+<h4 id="extract_zap_sneakers" class="doc_header"><code>extract_zap_sneakers</code><a href="https://github.com/ergonyc/snkrfinder/tree/master/snkrfinder/data.py#L250" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>extract_zap_sneakers</code>(<strong><code>df_zappos</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -987,28 +1019,6 @@ Name: Sneakers, Length: 27614, dtype: bool</pre>
 
 </div>
 
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># save the combined db for easy access later.</span>
-<span class="n">df_test</span><span class="o">.</span><span class="n">to_pickle</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">COMBINED_SNEAKERS_DF</span><span class="si">}</span><span class="s2">.pkl&quot;</span><span class="p">))</span>
-
-
-<span class="n">df_test2</span> <span class="o">=</span> <span class="n">merge_dbs</span><span class="p">(</span><span class="n">df_zappos</span><span class="p">,</span><span class="n">df_scraped</span><span class="p">)</span>
-<span class="n">df_test2</span><span class="o">.</span><span class="n">to_pickle</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">COMBINED_DF</span><span class="si">}</span><span class="s2">.pkl&quot;</span><span class="p">))</span>
-</pre></div>
-
-    </div>
 </div>
 </div>
 

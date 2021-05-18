@@ -15,6 +15,9 @@ entries:
     - output: web,pdf
       title: snkrfinder.data
       url: data.html
+    - output: web,pdf
+      title: first snkrfinder.model.core
+      url: model.core.html
     output: web
     title: snkrfinder
   output: web

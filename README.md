@@ -21,10 +21,13 @@ This is a project initiated while an Insight Data Science fellow.  It grew out o
 installs the snkrfinder module...
 - snkrfinder.core -> snkrfinder (utils)
 
-- snkrfinder.data -> snkrfinder.data.munge
+- snkrfinder.data -> snkrfinder.data
+                    (.munge submodule depricated)
 
-- snkrfinder.model -> snkrfinder.model (.core .cvae .transfer)
+- snkrfinder.model -> snkrfinder.model 
+                    inactive: (.core .cvae .transfer)
 
+inactive
 - snkrfinder.widget -> snkrfinder.widget.feats
 
 
@@ -36,7 +39,7 @@ NOTE:  symbolic link in the nbs directory to enable the module loads in these no
 
 Fill me in please! Don't forget code examples:
 
-```
+```python
 1+1
 ```
 
@@ -52,7 +55,22 @@ dump_pickle(filepath, item_to_save)
 
 simple wrapper to load a pickelfile
 
-```
+
+_HELPER scripts:
+
+> data
+
+> features 
+
+> features x size
+
+> SnkrFinder widget
+
+> models X latents X size X type
+
+
+
+```python
 HOME
 ```
 

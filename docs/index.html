@@ -51,12 +51,18 @@ nb_path: "nbs/index.ipynb"
 <ul>
 <li><p>snkrfinder.core -&gt; snkrfinder (utils)</p>
 </li>
-<li><p>snkrfinder.data -&gt; snkrfinder.data.munge</p>
+<li><p>snkrfinder.data -&gt; snkrfinder.data</p>
+
+<pre><code>              (.munge submodule depricated)</code></pre>
 </li>
-<li><p>snkrfinder.model -&gt; snkrfinder.model (.core .cvae .transfer)</p>
+<li><p>snkrfinder.model -&gt; snkrfinder.model</p>
+
+<pre><code>              inactive: (.core .cvae .transfer)</code></pre>
 </li>
-<li><p>snkrfinder.widget -&gt; snkrfinder.widget.feats</p>
-</li>
+</ul>
+<p>inactive</p>
+<ul>
+<li>snkrfinder.widget -&gt; snkrfinder.widget.feats</li>
 </ul>
 <p>NOTE:  symbolic link in the nbs directory to enable the module loads in these notebooks.  i.e. <code>ln -s ../snkrfinder/ snkrfinder</code></p>
 
@@ -114,6 +120,13 @@ nb_path: "nbs/index.ipynb"
 <p>dump_pickle[source]
 dump_pickle(filepath, item_to_save)</p>
 <p>simple wrapper to load a pickelfile</p>
+<p>_HELPER scripts:</p>
+<blockquote><p>data</p>
+<p>features</p>
+<p>features x size</p>
+<p>SnkrFinder widget</p>
+<p>models X latents X size X type</p>
+</blockquote>
 
 </div>
 </div>

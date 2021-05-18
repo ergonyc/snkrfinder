@@ -31,7 +31,21 @@ def get_zappos_db():
 # Cell
 
 def read_zappos_meta(path_meta):
-    "read the metadat from UT zappos 50k db"
+    """read the metadata from UT zappos 50k database.
+
+    The data is split between a  matlabe format, and a csv file.  A helper,
+    `_path_from_mat` reads the Matlab, and the two are combined into a
+    Pandas dataframe.   Some light munging to clean up some awkward strings and
+    prep the info for easy access follows.
+
+    Args:
+        path_meta (str): path where the meta-data files live
+
+    Returns:
+        df (pd.DataFrame): dataframe having all the sneaker info and and image name
+
+    """
+
 
     def _path_from_mat(fname):
         """ reads zappos imagepath from matlab file"""
@@ -49,15 +63,22 @@ def read_zappos_meta(path_meta):
 
 
     # fix the path by remove trailing periods in folder names
-    df.loc[df.path.str.contains("./",regex=False),"path"] = [i.replace("./","/")
-                                                             for i in
-                                                               df.loc[df.path.str.contains("./",regex=False),"path"]]
-    df.loc[df.path.str.contains("Levi\'s ",regex=False),"path"] = [i.replace("Levi\'s ","Levis ")
-                                                                   for i in
-                                                                     df.loc[df.path.str.contains("Levi\'s ",regex=False),"path"]]
+    to_fix = df.path.str.contains("./",regex=False)
+    df.loc[to_fix,"path"] = [i.replace("./","/")
+                                for i in
+                                    df.loc[to_fix,"path"]]
+
+    to_fix = df.path.str.contains("Levi\'s ",regex=False)
+    df.loc[to_fix,"path"] = [i.replace("Levi\'s ","Levis ")
+                               for i in
+                                  df.loc[to_fix,"path"]]
+
     # create brands and category stubs...
     df['path_and_file'] = df.path.apply(lambda path: (os.path.normpath(path)).split(os.sep) )
     df_to_add = pd.DataFrame(df['path_and_file'].tolist(), columns=['Category1','Category2','Brand','Filename'])
+
+    #prepend the root-directory of for the images 'ut-zap50k-images/'
+    df.loc[:,"path"]=df.path.apply(lambda x: 'ut-zap50k-images/'+x)
 
     df = df.merge(df_to_add, left_index=True, right_index=True)
     return df
@@ -66,7 +87,16 @@ def read_zappos_meta(path_meta):
 # Cell
 
 def simplify_zappos_db(df):
-    " simplifies the db (df)"
+    """simlify the dataframe derived from the UT zappos 50k database.
+
+    Args:
+        df (pd.DataFrame): dataframe containing all 50k sneakers / images
+
+    Returns:
+        df (pd.DataFrame): dataframe limited to Sneakers, Boots, Shoes for Adults
+
+    """
+
     # add our "sneaker category"
     df.loc[:,'Sneakers'] = (df['Category2'] == 'Sneakers and Athletic Shoes')
 
@@ -117,6 +147,7 @@ def simplify_zappos_db(df):
     #keep Adult, Sneakers, Boots, Shoes, Slippers
     keep_rows = (df.Sneakers | df.Boots | df.Shoes| df.Slippers) & (df.Adult)
     df = df[keep_rows.values]
+
     return df
 
 # Cell
@@ -133,13 +164,12 @@ def skl_tt_split(df,strat_cat):
     # keep
     test_ratio = 0.15
 
-    # train is now 75% of the entire data set
-    # the _junk suffix means that we drop that variable completely
-    x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=1 - train_ratio,stratify=y, random_state=666)
+    # train is now 70% of the entire data set
+    x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=1-train_ratio, stratify=y, random_state=666)
 
     # test is now 15% of the initial data set
     # validation is now 15% of the initial data set
-    x_val, x_test, y_val, y_test = train_test_split(x_test, y_test, test_size=test_ratio/(test_ratio + validation_ratio),stratify=y_test, random_state=666)
+    x_val, x_test, y_val, y_test = train_test_split(x_test, y_test, test_size=test_ratio/(test_ratio + validation_ratio), stratify=y_test, random_state=666)
     # pack into the dataframe
     df.loc[:,'train'] = False
     df.loc[:,'test'] = False
@@ -203,6 +233,9 @@ def get_scraped_db():
     df_scraped.loc[:,"cat"]=df_scraped.attributes.apply(_extract_cat)
     df_scraped.loc[:,"db_name"]=df_scraped["path"].apply(_extract_db_nm)
     df_scraped.loc[df_scraped['db_name']=='goat',"brand"]=df_scraped.loc[df_scraped['db_name']=='goat',"attributes"].apply(_extract_brand_goat)
+
+
+
     return df_scraped
 
 
