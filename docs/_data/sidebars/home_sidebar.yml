@@ -18,6 +18,12 @@ entries:
     - output: web,pdf
       title: first snkrfinder.model.core
       url: model.core.html
+    - output: web,pdf
+      title: first snkrfinder.model.transfer
+      url: model.transfer.html
+    - output: web,pdf
+      title: first snkrfinder.model.cvae
+      url: model.cvae.html
     output: web
     title: snkrfinder
   output: web
